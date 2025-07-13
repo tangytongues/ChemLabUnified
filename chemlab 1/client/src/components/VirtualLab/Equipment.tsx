@@ -566,102 +566,209 @@ export const Equipment: React.FC<EquipmentProps> = ({
     if (id === "burette" && isOnWorkbench) {
       return (
         <div className="relative">
-          {/* Realistic Burette */}
-          <div className="relative w-8 h-32">
-            {/* Main burette tube */}
-            <div className="absolute inset-x-1 top-0 bottom-4 bg-gradient-to-b from-transparent to-gray-100 border-2 border-gray-400 rounded-b-lg overflow-hidden shadow-md">
-              {/* Solution in burette with improved animation */}
+          {/* Ultra-Realistic Laboratory Burette */}
+          <div className="relative w-24 h-96">
+            {/* Burette clamp and stand */}
+            <div className="absolute -left-4 top-8 w-8 h-16 bg-gradient-to-r from-gray-700 to-gray-600 rounded-r-lg border border-gray-500 shadow-lg">
+              <div className="absolute inset-1 bg-gradient-to-r from-gray-600 to-gray-500 rounded-r-lg"></div>
+              <div className="absolute top-3 left-2 w-2 h-10 bg-gray-300 rounded-full shadow-inner"></div>
+              <div className="absolute top-1 left-1 w-1 h-2 bg-white opacity-40 rounded"></div>
+            </div>
+
+            {/* Main burette glass tube with ultra-realistic appearance */}
+            <div className="absolute left-4 top-0 w-16 h-80 bg-gradient-to-r from-blue-50 via-white to-blue-50 border-l-2 border-r-2 border-gray-300 rounded-b-2xl overflow-hidden shadow-xl">
+              {/* Glass thickness effect */}
+              <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-r from-gray-200 to-transparent opacity-50"></div>
+              <div className="absolute right-0 top-0 w-1 h-full bg-gradient-to-l from-gray-300 to-transparent opacity-40"></div>
+
+              {/* Glass reflection highlights */}
+              <div className="absolute left-1 top-0 w-3 h-full bg-gradient-to-r from-white to-transparent opacity-30"></div>
+              <div className="absolute right-1 top-0 w-2 h-full bg-gradient-to-l from-white to-transparent opacity-20"></div>
+
+              {/* Solution in burette with realistic physics */}
               {chemicals.length > 0 && (
                 <div
-                  className="absolute bottom-0 left-0 right-0 rounded-b-lg transition-all duration-700 ease-out"
+                  className="absolute bottom-0 left-0 right-0 transition-all duration-1000 ease-out"
                   style={{
-                    backgroundColor: getMixedColor(),
-                    height: `${getSolutionHeight()}%`,
-                    opacity: 0.85,
-                    backgroundImage: `linear-gradient(180deg, ${getMixedColor()}00 0%, ${getMixedColor()} 100%)`,
+                    height: `${Math.min((chemicals.reduce((sum, c) => sum + c.amount, 0) / 50) * 100, 100)}%`,
+                    background: `linear-gradient(180deg, ${getMixedColor()}f0, ${getMixedColor()})`,
                   }}
                 >
-                  {/* Liquid surface with meniscus effect */}
-                  <div className="absolute top-0 left-0 right-0 h-1">
-                    <div className="w-full h-full bg-white opacity-40 rounded-full animate-pulse"></div>
+                  {/* Realistic meniscus curve */}
+                  <div className="absolute top-0 left-2 right-2 h-2">
+                    <div className="w-full h-full bg-white opacity-25 rounded-full transform scale-y-50"></div>
                   </div>
 
-                  {/* Liquid movement animation */}
+                  {/* Liquid texture and bubbles */}
                   <div className="absolute inset-0">
+                    {/* Air bubbles */}
+                    <div className="absolute top-3 left-3 w-1 h-1 bg-white opacity-60 rounded-full animate-pulse"></div>
                     <div
-                      className="absolute top-1 left-1 w-1 h-2 bg-white opacity-20 rounded-full"
-                      style={{
-                        animationName: "pulse",
-                        animationDuration: "2s",
-                        animationIterationCount: "infinite",
-                        animationDelay: "0.3s",
-                      }}
+                      className="absolute top-6 right-4 w-0.5 h-0.5 bg-white opacity-40 rounded-full animate-pulse"
+                      style={{ animationDelay: "0.8s" }}
                     ></div>
                     <div
-                      className="absolute top-2 right-1 w-1 h-1 bg-white opacity-30 rounded-full"
-                      style={{
-                        animationName: "pulse",
-                        animationDuration: "2s",
-                        animationIterationCount: "infinite",
-                        animationDelay: "0.7s",
-                      }}
+                      className="absolute top-10 left-2 w-0.5 h-0.5 bg-white opacity-50 rounded-full animate-pulse"
+                      style={{ animationDelay: "1.2s" }}
                     ></div>
+
+                    {/* Liquid distortion effects */}
+                    <div className="absolute inset-0 opacity-10">
+                      <div className="absolute top-4 left-0 right-0 h-px bg-white"></div>
+                      <div className="absolute top-8 left-0 right-0 h-px bg-white"></div>
+                    </div>
                   </div>
                 </div>
               )}
 
-              {/* Volume markings with better positioning */}
-              <div className="absolute -right-10 inset-y-0 flex flex-col justify-between py-2">
-                <div className="text-[8px] text-gray-600 font-mono">50</div>
-                <div className="text-[8px] text-gray-600 font-mono">40</div>
-                <div className="text-[8px] text-gray-600 font-mono">30</div>
-                <div className="text-[8px] text-gray-600 font-mono">20</div>
-                <div className="text-[8px] text-gray-600 font-mono">10</div>
-                <div className="text-[8px] text-gray-600 font-mono">0</div>
-              </div>
-
-              {/* Scale lines */}
-              <div className="absolute right-0 inset-y-0 flex flex-col justify-between py-2">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="w-2 h-px bg-gray-500"></div>
-                ))}
-              </div>
-            </div>
-
-            {/* Realistic burette tap */}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-              <div className="w-3 h-3 bg-gradient-to-b from-gray-400 to-gray-600 rounded-full shadow-sm">
-                <div className="absolute top-0.5 left-0.5 w-2 h-2 bg-gradient-to-br from-gray-200 to-gray-400 rounded-full"></div>
-              </div>
-              {/* Tap handle */}
-              <div className="absolute -right-2 top-1 w-3 h-1 bg-gray-500 rounded-sm"></div>
-            </div>
-
-            {/* Enhanced drop animation when chemicals are added */}
-            {isDropping && (
-              <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
-                {/* Multiple droplets for more realistic effect */}
-                {[...Array(3)].map((_, i) => (
+              {/* Professional graduated markings exactly like lab equipment */}
+              <div className="absolute inset-0 pointer-events-none">
+                {/* Major graduations (every 5mL) with professional numbering */}
+                {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50].map((mark) => (
                   <div
-                    key={i}
-                    className="absolute w-1 h-2 rounded-full"
-                    style={{
-                      backgroundColor: getMixedColor(),
-                      left: `${-2 + i}px`,
-                      animationName: "bounce",
-                      animationDuration: "0.8s",
-                      animationIterationCount: "infinite",
-                      animationDelay: `${i * 0.2}s`,
-                    }}
-                  />
+                    key={`major-${mark}`}
+                    className="absolute left-0 flex items-center"
+                    style={{ bottom: `${(mark / 50) * 100}%` }}
+                  >
+                    <div className="bg-black w-6 h-0.5"></div>
+                    <span
+                      className="text-sm font-mono font-bold text-black ml-1 bg-white bg-opacity-95 px-1.5 py-0.5 rounded-sm shadow-sm border border-gray-200"
+                      style={{
+                        fontSize: "11px",
+                        lineHeight: "14px",
+                        minWidth: "24px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {50 - mark}
+                    </span>
+                  </div>
                 ))}
 
-                {/* Splash effect */}
-                <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
-                  <div className="w-4 h-px bg-blue-300 opacity-50 animate-ping"></div>
+                {/* Minor graduations (every 1mL) */}
+                {Array.from({ length: 51 }, (_, i) => i)
+                  .filter((mark) => mark % 5 !== 0)
+                  .map((mark) => (
+                    <div
+                      key={`minor-${mark}`}
+                      className="absolute left-0"
+                      style={{ bottom: `${(mark / 50) * 100}%` }}
+                    >
+                      <div className="bg-gray-700 w-4 h-px"></div>
+                      {mark % 10 === 0 && (
+                        <span
+                          className="text-xs font-mono text-gray-700 ml-1"
+                          style={{ fontSize: "9px" }}
+                        >
+                          {50 - mark}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+
+                {/* Sub-graduations (every 0.2mL) for precision */}
+                {Array.from({ length: 251 }, (_, i) => i * 0.2)
+                  .filter((mark) => mark % 1 !== 0)
+                  .map((mark) => (
+                    <div
+                      key={`sub-${mark}`}
+                      className="absolute left-0"
+                      style={{ bottom: `${(mark / 50) * 100}%` }}
+                    >
+                      <div className="bg-gray-500 w-2 h-px opacity-70"></div>
+                    </div>
+                  ))}
+              </div>
+
+              {/* Burette tip with realistic taper */}
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3 h-6">
+                <div
+                  className="w-full h-full bg-gradient-to-b from-transparent via-gray-100 to-gray-200 border border-gray-300"
+                  style={{
+                    clipPath: "polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%)",
+                  }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Professional burette stopcock */}
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+              <div className="relative">
+                {/* Stopcock body */}
+                <div className="w-8 h-4 bg-gradient-to-b from-gray-200 via-gray-300 to-gray-400 rounded border border-gray-400 shadow-lg">
+                  <div className="absolute inset-0.5 bg-gradient-to-b from-gray-100 to-gray-200 rounded"></div>
+                </div>
+
+                {/* Stopcock handle */}
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div className="w-10 h-2 bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300 rounded-full transform rotate-45 shadow-md border border-gray-500">
+                    <div className="absolute inset-0.5 bg-gradient-to-r from-gray-200 to-gray-100 rounded-full"></div>
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-3 h-1 bg-white opacity-60 rounded-full"></div>
+                  </div>
+                </div>
+
+                {/* Stopcock outlet */}
+                <div
+                  className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2 w-2 h-3 bg-gray-300 border border-gray-400"
+                  style={{
+                    clipPath: "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+                  }}
+                ></div>
+              </div>
+
+              {/* Ultra-realistic drop animation */}
+              {isDropping && (
+                <div className="absolute top-8 left-1/2 transform -translate-x-1/2">
+                  <div className="relative">
+                    {/* Main droplet */}
+                    <div
+                      className="w-2 h-3 rounded-full animate-bounce shadow-sm"
+                      style={{
+                        background: `radial-gradient(circle at 30% 30%, ${getMixedColor()}aa, ${getMixedColor()})`,
+                        animationDuration: "0.6s",
+                      }}
+                    ></div>
+
+                    {/* Secondary smaller droplets */}
+                    <div
+                      className="absolute top-4 left-1/2 transform -translate-x-1/2 w-1 h-1.5 rounded-full animate-bounce"
+                      style={{
+                        backgroundColor: getMixedColor(),
+                        animationDelay: "0.2s",
+                        animationDuration: "0.8s",
+                      }}
+                    ></div>
+
+                    {/* Droplet trail effect */}
+                    <div
+                      className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-0.5 h-2 opacity-60"
+                      style={{ backgroundColor: getMixedColor() }}
+                    ></div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Professional equipment label */}
+            <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 text-center">
+              <div className="bg-white border-2 border-gray-300 px-3 py-2 rounded-lg shadow-lg">
+                <div className="text-sm font-bold text-gray-800">
+                  50mL Burette
+                </div>
+                <div className="text-xs text-gray-600 mt-1">
+                  Precision: ±0.05mL
                 </div>
               </div>
-            )}
+              <div className="text-xs text-blue-600 mt-2 bg-blue-50 px-2 py-1 rounded border">
+                Vol:{" "}
+                {chemicals.reduce((sum, c) => sum + c.amount, 0).toFixed(2)}mL
+              </div>
+              {chemicals.length > 0 && (
+                <div className="text-xs text-purple-600 mt-1">
+                  {chemicals[0]?.name}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       );
