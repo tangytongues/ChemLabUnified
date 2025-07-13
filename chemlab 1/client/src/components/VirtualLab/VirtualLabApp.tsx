@@ -1177,11 +1177,20 @@ function VirtualLabApp({
                   ))}
                 </div>
               ) : (
-                <ExperimentSteps
-                  currentStep={currentStep}
-                  steps={experimentSteps}
-                  onStepClick={handleStepClick}
-                />
+                <>
+                  <ExperimentSteps
+                    currentStep={currentStep}
+                    steps={experimentSteps}
+                    onStepClick={handleStepClick}
+                  />
+
+                  {/* Chemical Formulas for Acid-Base Titration */}
+                  {experimentTitle.includes("Acid-Base") && (
+                    <div className="mt-4">
+                      <ChemicalFormulas experimentTitle={experimentTitle} />
+                    </div>
+                  )}
+                </>
               )}
 
               {/* Heating Status Panel - For Aspirin Experiment */}
