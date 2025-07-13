@@ -1502,17 +1502,7 @@ function VirtualLabApp({
                 )}
 
                 <button
-                  onClick={() => {
-                    // Reset calculations
-                    setMeasurements((prev) => ({
-                      ...prev,
-                      volume: 0,
-                      concentration: 0,
-                      ph: 7,
-                      molarity: 0,
-                      moles: 0,
-                    }));
-                  }}
+                  onClick={handleResetMeasurements}
                   className="bg-gray-600 hover:bg-gray-700 px-3 py-1 rounded text-sm font-medium transition-colors"
                 >
                   Reset
