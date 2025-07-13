@@ -748,6 +748,75 @@ function VirtualLabApp({
     setResults([]);
   };
 
+  // pH Meter functions for titration
+  const handlePhMeterCalibration = () => {
+    setPhMeterCalibrated(true);
+    setToastMessage("✓ pH Meter calibrated with buffer solutions");
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  const handleCalculateEndpoint = () => {
+    if (experimentTitle.includes("Acid-Base")) {
+      const volumeAdded = measurements.volume;
+      const percentComplete = Math.min((volumeAdded / 23.5) * 100, 100);
+
+      // Simulate titration curve
+      let newPH = 7.0;
+      if (volumeAdded < 20) {
+        newPH = 2.5 + (volumeAdded / 20) * 4; // Gradual increase
+      } else if (volumeAdded >= 20 && volumeAdded < 23.5) {
+        newPH = 6.5 + ((volumeAdded - 20) / 3.5) * 4; // Rapid increase near endpoint
+      } else {
+        newPH = 11.0 + Math.min((volumeAdded - 23.5) * 0.1, 2); // Basic region
+      }
+
+      setCurrentPH(newPH);
+      setMeasurements((prev) => ({
+        ...prev,
+        ph: newPH,
+        molarity: (0.1 * volumeAdded) / 25.0, // Calculate HCl molarity
+      }));
+
+      const result: Result = {
+        id: Date.now().toString(),
+        type: newPH > 8.2 ? "success" : "warning",
+        title: newPH > 8.2 ? "Endpoint Reached!" : "Approaching Endpoint",
+        description: `pH: ${newPH.toFixed(2)}, Volume: ${volumeAdded.toFixed(1)}mL`,
+        timestamp: new Date().toLocaleTimeString(),
+        calculation: {
+          ph: newPH,
+          volumeAdded: volumeAdded,
+          molarity: (0.1 * volumeAdded) / 25.0,
+          reactionType: "Acid-Base Neutralization",
+        },
+      };
+
+      setResults((prev) => [...prev, result]);
+
+      if (newPH > 8.2) {
+        setToastMessage("🎉 Titration endpoint reached! Pink color persists.");
+      } else {
+        setToastMessage(`📊 pH: ${newPH.toFixed(2)} - Continue titration`);
+      }
+      setTimeout(() => setToastMessage(null), 4000);
+    }
+  };
+
+  const handleResetMeasurements = () => {
+    setMeasurements({
+      volume: 0,
+      concentration: 0,
+      ph: 7,
+      molarity: 0,
+      moles: 0,
+      temperature: 25,
+    });
+    setCurrentPH(7.0);
+    setShowMeasurementsPanel(false);
+    setToastMessage("🔄 Measurements reset for new trial");
+    setTimeout(() => setToastMessage(null), 2000);
+  };
+
   // Function to check if an action is valid for the current step
   const validateStepSequence = (
     actionType: "equipment" | "chemical",
