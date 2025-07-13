@@ -602,12 +602,19 @@ function VirtualLabApp({
               );
               setMeasurements((prev) => ({
                 ...prev,
-                volume: totalVolume,
+                volume: experimentTitle.includes("Acid-Base")
+                  ? prev.volume + recentChemical.amount
+                  : totalVolume,
                 concentration: calculations.molarity,
                 ph: calculations.ph,
                 molarity: calculations.molarity,
                 moles: calculations.moles,
               }));
+
+              // Show measurements panel for titration
+              if (experimentTitle.includes("Acid-Base")) {
+                setShowMeasurementsPanel(true);
+              }
             }
           }
 
