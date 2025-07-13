@@ -65,7 +65,7 @@ export const ChemicalFormulas: React.FC<ChemicalFormulasProps> = ({
         ],
         reactions: [
           {
-            equation: "C₇H₆O₃ + (CH₃CO)₂O → C₉H₈O₄ + CH₃COOH",
+            equation: "C₇H₆O₃ + (CH₃CO)₂O �� C₉H₈O₄ + CH₃COOH",
             name: "Esterification Reaction",
             type: "Nucleophilic Acyl Substitution",
             conditions: [
@@ -154,10 +154,17 @@ export const ChemicalFormulas: React.FC<ChemicalFormulasProps> = ({
   if (compounds.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border">
-      <div className="p-4 border-b bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-t-lg">
-        <h2 className="font-semibold">Chemical Formulas</h2>
-        <p className="text-sm opacity-90">{experimentTitle}</p>
+    <div className="bg-white rounded-lg shadow-xl border-2 border-gray-200">
+      <div className="p-3 border-b bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-t-lg">
+        <div className="flex items-center space-x-2">
+          <div className="w-6 h-6 bg-white bg-opacity-20 rounded flex items-center justify-center">
+            <span className="text-sm font-bold">⚗️</span>
+          </div>
+          <div>
+            <h2 className="font-bold text-lg">Chemical Formulas</h2>
+            <p className="text-xs opacity-90">{experimentTitle}</p>
+          </div>
+        </div>
       </div>
 
       <div className="p-4 max-h-96 overflow-y-auto">
