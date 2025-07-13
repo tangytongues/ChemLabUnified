@@ -1221,6 +1221,7 @@ function VirtualLabApp({
                     currentStep={currentStep}
                     steps={experimentSteps}
                     onStepClick={handleStepClick}
+                    experimentTitle={experimentTitle}
                   />
 
                   {/* Chemical Formulas for Acid-Base Titration */}
