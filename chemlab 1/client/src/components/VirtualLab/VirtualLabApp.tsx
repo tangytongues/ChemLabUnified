@@ -113,6 +113,9 @@ function VirtualLabApp({
   const [wrongStepMessage, setWrongStepMessage] = useState("");
   const [completionTime, setCompletionTime] = useState<Date | null>(null);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [phMeterCalibrated, setPhMeterCalibrated] = useState(false);
+  const [showMeasurementsPanel, setShowMeasurementsPanel] = useState(false);
+  const [currentPH, setCurrentPH] = useState(7.0);
 
   const updateProgress = useUpdateProgress();
 
