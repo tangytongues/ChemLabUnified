@@ -135,9 +135,47 @@ function VirtualLabApp({
       : [`${stepData.title} requirements`],
   }));
 
-  // Aspirin synthesis chemicals
-  const experimentChemicals = useMemo(() => {
-    return [
+    const experimentChemicals = useMemo(() => {
+    // Return different chemicals based on experiment type
+    if (experimentTitle.includes("Acid-Base")) {
+      // Titration chemicals
+      return [
+        {
+          id: "hcl",
+          name: "Hydrochloric Acid",
+          formula: "HCl",
+          color: "#FFE135",
+          concentration: "0.1 M",
+          volume: 25,
+        },
+        {
+          id: "naoh",
+          name: "Sodium Hydroxide",
+          formula: "NaOH",
+          color: "#E0E0E0",
+          concentration: "0.1 M",
+          volume: 50,
+        },
+        {
+          id: "phenol",
+          name: "Phenolphthalein",
+          formula: "C₂₀H₁₄O₄",
+          color: "#FFB6C1",
+          concentration: "Indicator",
+          volume: 5,
+        },
+        {
+          id: "distilled_water",
+          name: "Distilled Water",
+          formula: "H₂O",
+          color: "#87CEEB",
+          concentration: "Pure",
+          volume: 100,
+        },
+      ];
+    } else {
+      // Aspirin synthesis chemicals
+      return [
       {
         id: "salicylic_acid",
         name: "Salicylic Acid",
