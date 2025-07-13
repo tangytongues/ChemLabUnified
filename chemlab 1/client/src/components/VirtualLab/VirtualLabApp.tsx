@@ -1565,14 +1565,6 @@ function VirtualLabApp({
             </div>
           )}
 
-          {/* Chemical Formulas Panel for both experiments */}
-          {(experimentTitle.includes("Aspirin") ||
-            experimentTitle.includes("Acid-Base")) && (
-            <div className="fixed top-4 left-4 z-40">
-              <ChemicalFormulas experimentTitle={experimentTitle} />
-            </div>
-          )}
-
           {/* Results Panel - When present */}
           {results.length > 0 && (
             <div className="border-t border-gray-200 bg-white/90 backdrop-blur-sm">
