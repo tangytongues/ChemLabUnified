@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface Chemical {
   id: string;
@@ -13,61 +13,83 @@ interface ColorMixingSystemProps {
   onReactionDetected: (reaction: string) => void;
 }
 
-export const ColorMixingSystem: React.FC<ColorMixingSystemProps> = ({ 
-  chemicals, 
-  onReactionDetected 
+const ColorMixingSystem: React.FC<ColorMixingSystemProps> = ({
+  chemicals,
+  onReactionDetected,
 }) => {
-  // Chemical reaction rules
+  // Chemical reaction rules for both aspirin synthesis and titration
   const reactions = {
-    'hcl+naoh': {
-      name: 'Acid-Base Neutralization',
-      color: '#E8F5E8',
-      description: 'HCl + NaOH → NaCl + H₂O',
-      indicator: 'pH changes from acidic to neutral'
+    // Aspirin synthesis reactions
+    "salicylic+acetic": {
+      name: "Aspirin Synthesis",
+      color: "#FFFACD",
+      description: "C₇H₆O₃ + (CH₃CO)₂O → C₉H₈O₄ + CH₃COOH",
+      indicator: "Acetylsalicylic acid (aspirin) forms",
     },
-    'agno3+hcl': {
-      name: 'Silver Chloride Precipitation',
-      color: '#F5F5F5',
-      description: 'AgNO₃ + HCl → AgCl↓ + HNO₃',
-      indicator: 'White precipitate forms'
+    // Titration reactions
+    "hcl+phenol": {
+      name: "Acid-Indicator Interaction",
+      color: "#ADD8E6",
+      description: "HCl + C₂₀H₁₄O₄ → Colorless complex",
+      indicator: "Indicator remains colorless in acidic solution",
     },
-    'cacl2+naoh': {
-      name: 'Calcium Hydroxide Formation',
-      color: '#F0F8FF',
-      description: 'CaCl₂ + 2NaOH → Ca(OH)₂ + 2NaCl',
-      indicator: 'Milky white solution'
+    "phenol+naoh": {
+      name: "Indicator Color Change",
+      color: "#FFB6C1",
+      description: "C₂₀H₁₄O₄ turns pink in basic solution",
+      indicator: "Pink color indicates basic pH",
     },
-    'phenol+naoh': {
-      name: 'Indicator Color Change',
-      color: '#FFB6C1',
-      description: 'Phenolphthalein turns pink in basic solution',
-      indicator: 'Pink color indicates basic pH'
+    "hcl+naoh+phenol": {
+      name: "Acid-Base Titration with Indicator",
+      color: "#FFB6C1",
+      description:
+        "HCl + NaOH → NaCl + H₂O (with C₂₀H₁₄O₄ indicator showing endpoint)",
+      indicator: "Color changes from colorless to pink at endpoint",
     },
-    'bromothymol+hcl': {
-      name: 'pH Indicator Change',
-      color: '#FFFF99',
-      description: 'Bromothymol blue turns yellow in acidic solution',
-      indicator: 'Yellow color indicates acidic pH'
-    }
+    "hcl+naoh": {
+      name: "Acid-Base Neutralization",
+      color: "#E8F5E8",
+      description: "HCl + NaOH → NaCl + H₂O",
+      indicator: "pH changes from acidic to neutral",
+    },
+    // Other common reactions
+    "agno3+hcl": {
+      name: "Silver Chloride Precipitation",
+      color: "#F5F5F5",
+      description: "AgNO₃ + HCl → AgCl↓ + HNO₃",
+      indicator: "White precipitate forms",
+    },
+    "cacl2+naoh": {
+      name: "Calcium Hydroxide Formation",
+      color: "#F0F8FF",
+      description: "CaCl₂ + 2NaOH → Ca(OH)₂ + 2NaCl",
+      indicator: "Milky white solution",
+    },
+    "bromothymol+hcl": {
+      name: "pH Indicator Change",
+      color: "#87CEEB",
+      description: "Bromothymol blue turns light blue in acidic solution",
+      indicator: "Light blue color indicates acidic pH",
+    },
   };
 
   const detectReaction = (chemicalIds: string[]): string | null => {
-    const sortedIds = chemicalIds.sort().join('+');
+    const sortedIds = chemicalIds.sort().join("+");
     return reactions[sortedIds as keyof typeof reactions]?.color || null;
   };
 
   const getReactionInfo = (chemicalIds: string[]) => {
-    const sortedIds = chemicalIds.sort().join('+');
+    const sortedIds = chemicalIds.sort().join("+");
     return reactions[sortedIds as keyof typeof reactions] || null;
   };
 
   // Advanced color mixing algorithm
   const mixColors = (chemicals: Chemical[]): string => {
-    if (chemicals.length === 0) return 'transparent';
+    if (chemicals.length === 0) return "transparent";
     if (chemicals.length === 1) return chemicals[0].color;
 
     // Check for specific reactions first
-    const chemicalIds = chemicals.map(c => c.id);
+    const chemicalIds = chemicals.map((c) => c.id);
     const reactionColor = detectReaction(chemicalIds);
     if (reactionColor) {
       const reaction = getReactionInfo(chemicalIds);
@@ -78,30 +100,33 @@ export const ColorMixingSystem: React.FC<ColorMixingSystemProps> = ({
     }
 
     // Default color mixing for non-reactive combinations
-    let r = 0, g = 0, b = 0, totalWeight = 0;
-    
-    chemicals.forEach(chemical => {
+    let r = 0,
+      g = 0,
+      b = 0,
+      totalWeight = 0;
+
+    chemicals.forEach((chemical) => {
       const weight = chemical.amount;
       const color = chemical.color;
-      
+
       // Convert hex to RGB
-      const hex = color.replace('#', '');
+      const hex = color.replace("#", "");
       const rVal = parseInt(hex.substr(0, 2), 16);
       const gVal = parseInt(hex.substr(2, 2), 16);
       const bVal = parseInt(hex.substr(4, 2), 16);
-      
+
       r += rVal * weight;
       g += gVal * weight;
       b += bVal * weight;
       totalWeight += weight;
     });
-    
-    if (totalWeight === 0) return 'transparent';
-    
+
+    if (totalWeight === 0) return "transparent";
+
     r = Math.round(r / totalWeight);
     g = Math.round(g / totalWeight);
     b = Math.round(b / totalWeight);
-    
+
     return `rgb(${r}, ${g}, ${b})`;
   };
 
