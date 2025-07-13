@@ -353,22 +353,43 @@ function VirtualLabApp({
           ),
         },
         {
-          id: "funnel",
-          name: "Funnel",
+          id: "magnetic_stirrer",
+          name: "Magnetic Stirrer",
           icon: (
             <svg
               width="36"
               height="36"
               viewBox="0 0 36 36"
               fill="none"
-              className="text-purple-600"
+              className="text-blue-600"
             >
-              <path
-                d="M8 8h20l-6 12v8h-8v-8L8 8z"
+              <rect
+                x="6"
+                y="20"
+                width="24"
+                height="8"
+                rx="2"
                 stroke="currentColor"
                 strokeWidth="2"
-                fill="rgba(147, 51, 234, 0.1)"
+                fill="rgba(59, 130, 246, 0.1)"
               />
+              <circle
+                cx="18"
+                cy="24"
+                r="6"
+                stroke="currentColor"
+                strokeWidth="1"
+                fill="none"
+              />
+              <rect
+                x="26"
+                y="21"
+                width="3"
+                height="2"
+                rx="1"
+                fill="currentColor"
+              />
+              <circle cx="28" cy="20" r="1" fill="green" />
             </svg>
           ),
         },
