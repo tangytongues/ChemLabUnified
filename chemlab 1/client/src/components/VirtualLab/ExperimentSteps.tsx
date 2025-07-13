@@ -51,7 +51,9 @@ export const ExperimentSteps: React.FC<ExperimentStepsProps> = ({
     <div className="bg-white rounded-lg shadow-lg border">
       <div className="p-4 border-b bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-t-lg">
         <h2 className="font-semibold">Experiment Procedure</h2>
-        <p className="text-sm opacity-90">Acid-Base Titration</p>
+        <p className="text-sm opacity-90">
+          {experimentTitle || "Acid-Base Titration"}
+        </p>
       </div>
 
       <div className="p-4 max-h-96 overflow-y-auto">
