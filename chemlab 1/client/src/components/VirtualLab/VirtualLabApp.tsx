@@ -173,8 +173,170 @@ function VirtualLabApp({
     ];
   }, []);
 
-  const experimentEquipment = useMemo(() => {
-    return [
+    const experimentEquipment = useMemo(() => {
+    // Return different equipment based on experiment type
+    if (experimentTitle.includes("Acid-Base")) {
+      // Titration equipment
+      return [
+        {
+          id: "burette",
+          name: "50mL Burette",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-blue-600"
+            >
+              <rect
+                x="16"
+                y="4"
+                width="4"
+                height="24"
+                rx="1"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(59, 130, 246, 0.1)"
+              />
+              <circle cx="18" cy="30" r="2" fill="currentColor" />
+              <path d="M14 8h8" stroke="currentColor" strokeWidth="1" />
+              <path d="M14 12h8" stroke="currentColor" strokeWidth="1" />
+              <path d="M14 16h8" stroke="currentColor" strokeWidth="1" />
+            </svg>
+          ),
+        },
+        {
+          id: "conical_flask",
+          name: "250mL Conical Flask",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-green-600"
+            >
+              <path
+                d="M14 6h8v6l6 16H8l6-16V6z"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(34, 197, 94, 0.1)"
+              />
+              <path d="M12 6h12" stroke="currentColor" strokeWidth="2" />
+            </svg>
+          ),
+        },
+        {
+          id: "white_tile",
+          name: "White Tile",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-gray-600"
+            >
+              <rect
+                x="6"
+                y="6"
+                width="24"
+                height="24"
+                rx="2"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(156, 163, 175, 0.1)"
+              />
+            </svg>
+          ),
+        },
+        {
+          id: "burette_stand",
+          name: "Burette Stand",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-gray-700"
+            >
+              <rect
+                x="4"
+                y="28"
+                width="28"
+                height="4"
+                rx="2"
+                fill="currentColor"
+              />
+              <rect
+                x="16"
+                y="4"
+                width="4"
+                height="24"
+                rx="2"
+                fill="currentColor"
+              />
+              <rect
+                x="10"
+                y="8"
+                width="8"
+                height="2"
+                rx="1"
+                fill="currentColor"
+              />
+            </svg>
+          ),
+        },
+        {
+          id: "pipette_filler",
+          name: "Pipette Filler",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-orange-600"
+            >
+              <circle
+                cx="18"
+                cy="18"
+                r="8"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(249, 115, 22, 0.1)"
+              />
+              <path d="M18 8v4" stroke="currentColor" strokeWidth="2" />
+              <path d="M18 24v4" stroke="currentColor" strokeWidth="2" />
+            </svg>
+          ),
+        },
+        {
+          id: "funnel",
+          name: "Funnel",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-purple-600"
+            >
+              <path
+                d="M8 8h20l-6 12v8h-8v-8L8 8z"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(147, 51, 234, 0.1)"
+              />
+            </svg>
+          ),
+        },
+      ];
+    } else {
+      // Aspirin synthesis equipment
+      return [
       {
         id: "erlenmeyer_flask",
         name: "125mL Erlenmeyer Flask",
