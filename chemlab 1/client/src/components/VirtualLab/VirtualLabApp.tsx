@@ -1535,6 +1535,32 @@ function VirtualLabApp({
               </div>
             ))}
           </div>
+
+          {/* Chemicals Bar */}
+          <div className="bg-gray-50 border-b border-gray-200 p-3">
+            <div className="flex items-center justify-between">
+              <h4 className="font-semibold text-gray-800 text-sm flex items-center">
+                <Beaker className="w-4 h-4 mr-2 text-green-600" />
+                Available Chemicals
+              </h4>
+            </div>
+            <div className="flex items-center space-x-3 mt-2 overflow-x-auto pb-2">
+              {experimentChemicals.map((chemical) => (
+                <div key={chemical.id} className="flex-shrink-0">
+                  <Chemical
+                    id={chemical.id}
+                    name={chemical.name}
+                    formula={chemical.formula}
+                    color={chemical.color}
+                    concentration={chemical.concentration}
+                    volume={chemical.volume}
+                    isSelected={selectedChemical === chemical.id}
+                    onClick={() => setSelectedChemical(chemical.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Main Work Area - Expanded */}
