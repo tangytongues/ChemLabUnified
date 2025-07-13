@@ -1360,6 +1360,49 @@ function VirtualLabApp({
             </WorkBench>
           </div>
 
+          {/* Titration-specific panels */}
+          {experimentTitle.includes("Acid-Base") && (
+            <div className="border-t border-gray-200 bg-white/90 backdrop-blur-sm">
+              <MeasurementsPanel
+                measurements={{
+                  ph: currentPH,
+                  volume: measurements.volume,
+                  molarity: measurements.molarity,
+                  temperature: measurements.temperature,
+                }}
+                onCalculateEndpoint={handleCalculateEndpoint}
+                onReset={handleResetMeasurements}
+                isVisible={measurements.volume > 0 || showMeasurementsPanel}
+              />
+            </div>
+          )}
+
+          {/* pH Meter for titrations */}
+          {experimentTitle.includes("Acid-Base") && measurements.volume > 0 && (
+            <div className="fixed bottom-4 right-4 z-40">
+              <PHMeterSimulation
+                currentPH={currentPH}
+                isCalibrated={phMeterCalibrated}
+                onCalibrate={handlePhMeterCalibration}
+                isConnected={true}
+                solutionName={"HCl + NaOH Titration"}
+                temperature={measurements.temperature}
+                onMeasurement={(ph, accuracy) => {
+                  setCurrentPH(ph);
+                  setMeasurements((prev) => ({ ...prev, ph }));
+                }}
+              />
+            </div>
+          )}
+
+          {/* Chemical Formulas Panel for both experiments */}
+          {(experimentTitle.includes("Aspirin") ||
+            experimentTitle.includes("Acid-Base")) && (
+            <div className="fixed top-4 left-4 z-40">
+              <ChemicalFormulas experimentTitle={experimentTitle} />
+            </div>
+          )}
+
           {/* Results Panel - When present */}
           {results.length > 0 && (
             <div className="border-t border-gray-200 bg-white/90 backdrop-blur-sm">
