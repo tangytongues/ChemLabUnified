@@ -21,6 +21,7 @@ export const ExperimentSteps: React.FC<ExperimentStepsProps> = ({
   currentStep,
   steps,
   onStepClick,
+  experimentTitle = "",
 }) => {
   const getStepIcon = (step: Step, index: number) => {
     if (step.status === "completed") {
