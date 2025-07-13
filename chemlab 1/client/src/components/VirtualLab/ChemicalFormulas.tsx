@@ -178,34 +178,55 @@ export const ChemicalFormulas: React.FC<ChemicalFormulasProps> = ({
             {compounds.map((compound, index) => (
               <div
                 key={index}
-                className="p-3 rounded-lg border bg-gray-50 hover:bg-gray-100 transition-colors"
+                className="p-3 rounded-lg border-2 border-gray-200 bg-gradient-to-r from-white to-gray-50 hover:from-blue-50 hover:to-white transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-medium text-gray-900 text-sm">
-                        {compound.name}
-                      </span>
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="flex items-center space-x-2">
+                        <div
+                          className="w-3 h-3 rounded-full"
+                          style={{
+                            backgroundColor: getTypeColor(
+                              compound.type,
+                            ).includes("blue")
+                              ? "#3B82F6"
+                              : getTypeColor(compound.type).includes("green")
+                                ? "#10B981"
+                                : getTypeColor(compound.type).includes("purple")
+                                  ? "#8B5CF6"
+                                  : "#6B7280",
+                          }}
+                        ></div>
+                        <span className="font-bold text-gray-900 text-sm">
+                          {compound.name}
+                        </span>
+                      </div>
                       <span
-                        className={`px-2 py-1 rounded-full text-xs border ${getTypeColor(compound.type)} flex items-center space-x-1`}
+                        className={`px-3 py-1 rounded-full text-xs font-medium border-2 ${getTypeColor(compound.type)} flex items-center space-x-1 shadow-sm`}
                       >
                         {getTypeIcon(compound.type)}
-                        <span className="capitalize">{compound.type}</span>
+                        <span className="capitalize font-semibold">
+                          {compound.type}
+                        </span>
                       </span>
                     </div>
-                    <div className="flex items-center space-x-4 text-xs text-gray-600">
-                      <span className="font-mono bg-white px-2 py-1 rounded border">
-                        {compound.formula}
-                        {compound.phase && (
-                          <span className="text-gray-500">
-                            {" "}
-                            {compound.phase}
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-3">
+                        <span className="font-mono bg-gray-800 text-white px-3 py-1 rounded-md border text-sm font-bold">
+                          {compound.formula}
+                          {compound.phase && (
+                            <span className="text-gray-300 ml-1">
+                              {compound.phase}
+                            </span>
+                          )}
+                        </span>
+                        {compound.molWeight && (
+                          <span className="text-xs font-medium text-gray-600 bg-yellow-100 px-2 py-1 rounded border">
+                            MW: {compound.molWeight} g/mol
                           </span>
                         )}
-                      </span>
-                      {compound.molWeight && (
-                        <span>MW: {compound.molWeight} g/mol</span>
-                      )}
+                      </div>
                     </div>
                   </div>
                 </div>
