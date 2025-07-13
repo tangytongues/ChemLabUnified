@@ -1480,14 +1480,7 @@ function VirtualLabApp({
               <div className="flex items-center space-x-3">
                 {experimentTitle.includes("Acid-Base") && (
                   <button
-                    onClick={() => {
-                      const equivalencePoint = 25.0; // mL for 0.1M solutions
-                      const percentComplete =
-                        (measurements.volume / equivalencePoint) * 100;
-                      console.log(
-                        `Titration ${percentComplete.toFixed(1)}% complete`,
-                      );
-                    }}
+                    onClick={handleCalculateEndpoint}
                     className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm font-medium transition-colors"
                   >
                     Calculate Endpoint
