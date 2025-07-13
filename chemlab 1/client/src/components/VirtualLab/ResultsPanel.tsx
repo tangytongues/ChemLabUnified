@@ -428,15 +428,20 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
     .filter((type, index, arr) => arr.indexOf(type) === index);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border">
-      <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-t-lg">
-        <div>
-          <h3 className="font-semibold">
-            Experiment Results & Chemical Analysis
-          </h3>
-          <p className="text-sm opacity-90">
-            Real-time chemical reactions and calculations
-          </p>
+    <div className="bg-white rounded-lg shadow-xl border-2 border-gray-200">
+      <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-t-lg">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+            <span className="text-xl font-bold">🧪</span>
+          </div>
+          <div>
+            <h3 className="font-bold text-lg">
+              Experiment Results & Chemical Analysis
+            </h3>
+            <p className="text-sm opacity-90">
+              Real-time chemical reactions and calculations
+            </p>
+          </div>
         </div>
         <button
           onClick={onClear}
