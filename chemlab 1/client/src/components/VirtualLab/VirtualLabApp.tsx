@@ -135,7 +135,7 @@ function VirtualLabApp({
       : [`${stepData.title} requirements`],
   }));
 
-    const experimentChemicals = useMemo(() => {
+  const experimentChemicals = useMemo(() => {
     // Return different chemicals based on experiment type
     if (experimentTitle.includes("Acid-Base")) {
       // Titration chemicals
@@ -176,40 +176,41 @@ function VirtualLabApp({
     } else {
       // Aspirin synthesis chemicals
       return [
-      {
-        id: "salicylic_acid",
-        name: "Salicylic Acid",
-        formula: "C₇H₆O₃",
-        color: "#F8F8FF",
-        concentration: "2.0 g",
-        volume: 25,
-      },
-      {
-        id: "acetic_anhydride",
-        name: "Acetic Anhydride",
-        formula: "(CH₃CO)₂O",
-        color: "#DDA0DD",
-        concentration: "5 mL",
-        volume: 50,
-      },
-      {
-        id: "phosphoric_acid",
-        name: "Phosphoric Acid",
-        formula: "H₃PO₄",
-        color: "#FFA500",
-        concentration: "Catalyst",
-        volume: 10,
-      },
-      {
-        id: "distilled_water",
-        name: "Distilled Water",
-        formula: "H₂O",
-        color: "#87CEEB",
-        concentration: "Pure",
-        volume: 100,
-      },
-    ];
-  }, []);
+        {
+          id: "salicylic_acid",
+          name: "Salicylic Acid",
+          formula: "C₇H₆O₃",
+          color: "#F8F8FF",
+          concentration: "2.0 g",
+          volume: 25,
+        },
+        {
+          id: "acetic_anhydride",
+          name: "Acetic Anhydride",
+          formula: "(CH₃CO)₂O",
+          color: "#DDA0DD",
+          concentration: "5 mL",
+          volume: 50,
+        },
+        {
+          id: "phosphoric_acid",
+          name: "Phosphoric Acid",
+          formula: "H₃PO₄",
+          color: "#FFA500",
+          concentration: "Catalyst",
+          volume: 10,
+        },
+        {
+          id: "distilled_water",
+          name: "Distilled Water",
+          formula: "H₂O",
+          color: "#87CEEB",
+          concentration: "Pure",
+          volume: 100,
+        },
+      ];
+    }
+  }, [experimentTitle]);
 
   const experimentEquipment = useMemo(() => {
     // Return different equipment based on experiment type
