@@ -316,6 +316,140 @@ export const Equipment: React.FC<EquipmentProps> = ({
         );
       }
 
+      if (id === "conical_flask" && isOnWorkbench) {
+        return (
+          <div className="relative">
+            {/* Ultra-Realistic Conical Flask */}
+            <div className="relative w-32 h-40">
+              {/* Flask neck */}
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-8 h-16 bg-gradient-to-b from-white via-gray-50 to-transparent border-l-2 border-r-2 border-gray-300 rounded-t-lg shadow-lg">
+                {/* Glass thickness on neck */}
+                <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-r from-gray-200 to-transparent opacity-40"></div>
+                <div className="absolute right-0 top-0 w-1 h-full bg-gradient-to-l from-gray-200 to-transparent opacity-40"></div>
+
+                {/* Neck rim */}
+                <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-gray-200 to-gray-100 border border-gray-300 rounded-t-lg"></div>
+              </div>
+
+              {/* Main conical body */}
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-28 h-28">
+                <div
+                  className="relative w-full h-full bg-gradient-to-br from-white via-gray-50 to-gray-100 border-2 border-gray-300 shadow-xl overflow-hidden"
+                  style={{
+                    clipPath: "polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%)",
+                  }}
+                >
+                  {/* Glass reflection effects */}
+                  <div className="absolute top-2 left-3 w-4 h-8 bg-gradient-to-br from-white to-transparent opacity-60 rounded-full transform rotate-12"></div>
+                  <div className="absolute top-4 right-4 w-2 h-6 bg-gradient-to-bl from-white to-transparent opacity-40 rounded-full"></div>
+
+                  {/* Solution in flask */}
+                  {chemicals.length > 0 && (
+                    <div
+                      className="absolute bottom-0 left-0 right-0 transition-all duration-700 ease-out"
+                      style={{
+                        height: `${Math.min(80, getSolutionHeight() * 0.7)}px`,
+                        background: `linear-gradient(180deg, ${getMixedColor()}cc, ${getMixedColor()})`,
+                        clipPath: "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+                      }}
+                    >
+                      {/* Solution surface with realistic meniscus */}
+                      <div className="absolute top-0 left-2 right-2 h-2">
+                        <div className="w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-30 rounded-full transform scale-y-75"></div>
+                      </div>
+
+                      {/* Liquid movement and bubbles for active titration */}
+                      {chemicals.length > 1 && (
+                        <div className="absolute inset-0">
+                          {/* Titration bubbles */}
+                          {[...Array(8)].map((_, i) => (
+                            <div
+                              key={i}
+                              className="absolute w-1 h-1 bg-white rounded-full opacity-60"
+                              style={{
+                                left: `${15 + (i % 3) * 20}%`,
+                                bottom: `${10 + (i % 4) * 15}%`,
+                                animationName: "pulse",
+                                animationDuration: `${1.5 + (i % 3) * 0.5}s`,
+                                animationIterationCount: "infinite",
+                                animationDelay: `${i * 0.3}s`,
+                              }}
+                            />
+                          ))}
+
+                          {/* Mixing swirl effect */}
+                          <div className="absolute inset-0">
+                            <div
+                              className="absolute w-full h-2 opacity-20"
+                              style={{
+                                bottom: "30%",
+                                background: `linear-gradient(90deg, transparent, ${getMixedColor()}, transparent)`,
+                                animationName: "pulse",
+                                animationDuration: "2s",
+                                animationIterationCount: "infinite",
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Endpoint color change indicator - pink for titration */}
+                      {chemicals.some((c) => c.id === "naoh") &&
+                        chemicals.some((c) => c.id === "phenol") && (
+                          <div className="absolute inset-0">
+                            <div
+                              className="absolute inset-0 bg-pink-300 opacity-40 animate-pulse"
+                              style={{ animationDuration: "3s" }}
+                            ></div>
+                            <div className="absolute top-1 left-1/2 transform -translate-x-1/2 text-xs font-bold text-pink-700 bg-white bg-opacity-80 px-1 rounded">
+                              Endpoint!
+                            </div>
+                          </div>
+                        )}
+                    </div>
+                  )}
+
+                  {/* Flask volume markings */}
+                  <div className="absolute right-0 bottom-0 h-20 w-8 pointer-events-none">
+                    {[50, 100, 150, 200, 250].map((mark, i) => (
+                      <div
+                        key={mark}
+                        className="absolute right-0 flex items-center"
+                        style={{ bottom: `${i * 20}%` }}
+                      >
+                        <div className="bg-gray-600 w-2 h-px"></div>
+                        <span
+                          className="text-xs font-mono text-gray-600 ml-1"
+                          style={{ fontSize: "8px" }}
+                        >
+                          {mark}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Professional label */}
+              <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+                <div className="bg-white border border-gray-300 px-2 py-1 rounded shadow">
+                  <div className="text-sm font-semibold text-gray-800">
+                    250mL Conical Flask
+                  </div>
+                </div>
+                {chemicals.length > 0 && (
+                  <div className="text-xs text-gray-600 mt-1">
+                    Vol:{" "}
+                    {chemicals.reduce((sum, c) => sum + c.amount, 0).toFixed(1)}
+                    mL
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      }
+
       if (id === "graduated_cylinder" || id === "burette") {
         return (
           <div className="relative">
