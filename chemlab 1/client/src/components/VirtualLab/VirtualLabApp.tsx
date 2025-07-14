@@ -86,6 +86,12 @@ function VirtualLabApp({
   allSteps,
   experimentId = 1,
 }: VirtualLabProps) {
+  console.log("🧪 VirtualLabApp rendering with:", {
+    experimentTitle,
+    stepNumber,
+    totalSteps,
+    stepTitle: step?.title,
+  });
   const [equipmentPositions, setEquipmentPositions] = useState<
     EquipmentPosition[]
   >([]);
@@ -542,6 +548,8 @@ function VirtualLabApp({
 
   const handleEquipmentDrop = useCallback(
     (id: string, x: number, y: number) => {
+      console.log(`handleEquipmentDrop called with: id=${id}, x=${x}, y=${y}`);
+
       // Ensure coordinates are valid numbers and within reasonable bounds
       const validX = Math.max(50, Math.min(x, window.innerWidth - 200));
       const validY = Math.max(50, Math.min(y, window.innerHeight - 200));
@@ -621,10 +629,12 @@ function VirtualLabApp({
                 };
 
               case "magnetic_stirrer":
-                // Always position stirrer below flask if flask exists
+                console.log(`Positioning magnetic stirrer`);
+                // Always position stirrer at the bottom of the screen
+                const bottomY = Math.max(300, window.innerHeight - 150); // Ensure it's visible
                 if (flask) {
                   const autoX = flask.x;
-                  const autoY = flask.y + 120; // Position below flask
+                  const autoY = bottomY;
                   const distanceToFlask = Math.sqrt(
                     (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
                   );
@@ -635,19 +645,29 @@ function VirtualLabApp({
                     (dropY > flask.y && Math.abs(dropX - flask.x) < 100)
                   ) {
                     setToastMessage(
-                      "🔧 Magnetic stirrer positioned under flask for mixing!",
+                      "🔧 Magnetic stirrer positioned at the bottom under flask!",
                     );
                     setTimeout(() => setToastMessage(null), 3000);
+                    console.log(
+                      `Magnetic stirrer auto-positioned at x=${autoX}, y=${autoY}`,
+                    );
                     return {
                       x: autoX,
-                      y: Math.min(window.innerHeight - 150, autoY),
+                      y: autoY,
                     };
                   }
                 }
-                // Position stirrer in lower area by default
+                // Position stirrer at bottom of screen by default
+                const defaultX = Math.min(
+                  Math.max(150, dropX),
+                  window.innerWidth - 150,
+                );
+                console.log(
+                  `Magnetic stirrer default position: x=${defaultX}, y=${bottomY}`,
+                );
                 return {
-                  x: Math.min(Math.max(150, dropX), window.innerWidth - 150),
-                  y: Math.min(Math.max(400, dropY), window.innerHeight - 150),
+                  x: defaultX,
+                  y: bottomY, // Always at bottom
                 };
 
               default:
@@ -698,7 +718,11 @@ function VirtualLabApp({
 
         if (existing) {
           // Smooth position update for existing equipment with auto-positioning
+          console.log(`Repositioning existing equipment: ${id}`);
           const optimalPos = getOptimalPosition(id, validX, validY, prev);
+          console.log(
+            `New position for ${id}: x=${optimalPos.x}, y=${optimalPos.y}`,
+          );
           return prev.map((pos) =>
             pos.id === id ? { ...pos, x: optimalPos.x, y: optimalPos.y } : pos,
           );
@@ -730,11 +754,22 @@ function VirtualLabApp({
         }
 
         // Get optimal position for new equipment
+        console.log(`Adding new equipment: ${id}`);
         const optimalPos = getOptimalPosition(id, validX, validY, prev);
-        return [
+        console.log(
+          `Optimal position for new ${id}: x=${optimalPos.x}, y=${optimalPos.y}`,
+        );
+        const newEquipment = {
+          id,
+          x: optimalPos.x,
+          y: optimalPos.y,
+          chemicals: [],
+        };
+        console.log(`Equipment list after adding ${id}:`, [
           ...prev,
-          { id, x: optimalPos.x, y: optimalPos.y, chemicals: [] },
-        ];
+          newEquipment,
+        ]);
+        return [...prev, newEquipment];
       });
     },
     [experimentTitle, currentGuidedStep, aspirinGuidedSteps],
@@ -1210,7 +1245,7 @@ function VirtualLabApp({
         concentration: 0,
         ph: 7,
         molarity: 0,
-        weight: 0,
+
         moles: 0,
         temperature: 25,
       });
@@ -1644,8 +1679,8 @@ function VirtualLabApp({
                     color={chemical.color}
                     concentration={chemical.concentration}
                     volume={chemical.volume}
-                    isSelected={selectedChemical === chemical.id}
-                    onClick={() => setSelectedChemical(chemical.id)}
+                    selected={selectedChemical === chemical.id}
+                    onSelect={() => setSelectedChemical(chemical.id)}
                   />
                 </div>
               ))}

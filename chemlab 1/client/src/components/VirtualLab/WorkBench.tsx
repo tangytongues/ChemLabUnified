@@ -259,15 +259,25 @@ export const WorkBench: React.FC<WorkBenchProps> = ({
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+
     // Try to get equipment data first, then fallback to text/plain
     const equipmentId = e.dataTransfer.getData("equipment");
     const id = equipmentId || e.dataTransfer.getData("text/plain");
+
+    console.log(`Dropping equipment: ${id}`);
 
     if (id) {
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
+
+      console.log(`Drop position: x=${x}, y=${y}`);
+
+      // Call the onDrop handler
       onDrop(id, x, y);
+    } else {
+      console.warn("No equipment ID found in drop event");
     }
   };
 
