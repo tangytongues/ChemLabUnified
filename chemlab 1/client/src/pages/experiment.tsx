@@ -27,8 +27,10 @@ import { Link } from "wouter";
 import type { ExperimentStep } from "@shared/schema";
 
 export default function Experiment() {
+  console.log("🧪 Experiment page component is rendering!");
   const { id } = useParams<{ id: string }>();
   const experimentId = parseInt(id || "1");
+  console.log("🔬 Experiment ID:", experimentId, "from URL param:", id);
 
   const {
     data: experiment,
