@@ -157,7 +157,7 @@ export default function ProgressModal({ children }: ProgressModalProps) {
                   <span className="text-gray-600">Total Steps Completed:</span>
                   <div className="font-semibold">
                     {userProgress?.reduce(
-                      (sum: number, p: any) => sum + p.progress,
+                      (sum: number, p: any) => sum + p.currentStep,
                       0,
                     ) || 0}
                   </div>
