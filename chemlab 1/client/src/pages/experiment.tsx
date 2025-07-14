@@ -221,6 +221,12 @@ export default function Experiment() {
     hasCurrentStepData: !!currentStepData,
   });
 
+  console.log("🔬 About to render experiment page with data:", {
+    experimentId,
+    effectiveExperiment: effectiveExperiment.title,
+    currentStepData: currentStepData?.title,
+  });
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
