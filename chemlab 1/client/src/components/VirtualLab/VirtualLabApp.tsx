@@ -654,7 +654,7 @@ function VirtualLabApp({
                 // Default positioning if no flask present - centered on workbench
                 return {
                   x: Math.min(Math.max(300, dropX), 450), // Centered horizontally
-                  y: Math.min(Math.max(280, dropY), 320), // Position in lower area
+                  y: Math.min(Math.max(320, dropY), 370), // Position lower in workbench
                 };
 
               default:
