@@ -1211,4 +1211,67 @@ export const equipmentList = [
       </div>
     ),
   },
+  {
+    id: "graduated_cylinder",
+    name: "Graduated Cylinder",
+    icon: (
+      <div className="w-9 h-9 flex items-center justify-center">
+        <div className="w-3 h-8 bg-gradient-to-b from-gray-100 to-gray-200 border-2 border-gray-400 rounded-lg shadow-md relative overflow-hidden">
+          <div className="absolute top-1 left-0.5 w-0.5 h-6 bg-white opacity-50 rounded-full"></div>
+          <div className="absolute bottom-0 left-0.5 right-0.5 h-2 bg-blue-200 opacity-60 rounded-b-lg"></div>
+          <div className="absolute top-2 right-0 w-1 h-px bg-gray-500"></div>
+          <div className="absolute top-4 right-0 w-0.5 h-px bg-gray-500"></div>
+          <div className="absolute top-6 right-0 w-1 h-px bg-gray-500"></div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "test_tubes",
+    name: "Test Tubes",
+    icon: (
+      <div className="w-9 h-9 flex items-center justify-center">
+        <div className="flex gap-1">
+          <div className="w-1.5 h-7 bg-gradient-to-b from-gray-100 to-gray-200 border border-gray-400 rounded-b-lg shadow-sm relative">
+            <div className="absolute bottom-0 left-0 right-0 h-2 bg-green-200 opacity-60 rounded-b-lg"></div>
+          </div>
+          <div className="w-1.5 h-7 bg-gradient-to-b from-gray-100 to-gray-200 border border-gray-400 rounded-b-lg shadow-sm relative">
+            <div className="absolute bottom-0 left-0 right-0 h-3 bg-red-200 opacity-60 rounded-b-lg"></div>
+          </div>
+          <div className="w-1.5 h-7 bg-gradient-to-b from-gray-100 to-gray-200 border border-gray-400 rounded-b-lg shadow-sm relative">
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-200 opacity-60 rounded-b-lg"></div>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "magnetic_stirrer",
+    name: "Magnetic Stirrer",
+    icon: (
+      <div className="w-9 h-9 flex items-center justify-center">
+        <div className="w-8 h-5 bg-gradient-to-b from-gray-200 to-gray-400 border-2 border-gray-500 rounded-lg shadow-md relative">
+          <div className="absolute top-1 left-1 w-1 h-1 bg-red-500 rounded-full"></div>
+          <div className="absolute top-1 right-1 w-1 h-1 bg-green-500 rounded-full"></div>
+          <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-0.5 bg-white rounded-full"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-0.5 bg-white rounded-full animate-spin"></div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "conical_flask",
+    name: "Conical Flask",
+    icon: (
+      <div className="w-9 h-9 relative">
+        <div
+          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-5 h-5 bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-gray-400 shadow-md"
+          style={{ clipPath: "polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%)" }}
+        >
+          <div className="absolute top-1 left-1 w-0.5 h-1 bg-white opacity-50 rounded-full"></div>
+        </div>
+        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-1.5 h-3 bg-gradient-to-b from-gray-100 to-gray-200 border-2 border-gray-400 rounded-t-lg"></div>
+      </div>
+    ),
+  },
 ];
