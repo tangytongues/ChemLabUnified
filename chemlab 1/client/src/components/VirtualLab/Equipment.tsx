@@ -88,10 +88,15 @@ export const Equipment: React.FC<EquipmentProps> = ({
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
-    console.log(`Drag ended for equipment: ${id}`);
+    console.log(`🏁 Drag ended for equipment: ${id} (${name})`);
     setIsDragging(false);
     const dragElement = e.currentTarget as HTMLElement;
     dragElement.style.opacity = "1";
+    dragElement.style.transform = "";
+
+    if (id === "magnetic_stirrer") {
+      console.log("🧲 Magnetic stirrer drag ended!");
+    }
 
     // Reset any drag-related states after a short delay to ensure clean state
     setTimeout(() => {
