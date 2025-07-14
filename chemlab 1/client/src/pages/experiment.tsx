@@ -52,6 +52,18 @@ export default function Experiment() {
     error: error?.message,
   });
 
+  // Timeout fallback for loading state
+  const [showFallback, setShowFallback] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (experimentLoading) {
+        console.log("Loading timeout - forcing content display");
+        setShowFallback(true);
+      }
+    }, 3000); // Show fallback after 3 seconds
+    return () => clearTimeout(timer);
+  }, [experimentLoading]);
+
   const [currentStep, setCurrentStep] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [timer, setTimer] = useState(0);
