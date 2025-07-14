@@ -570,39 +570,72 @@ function VirtualLabApp({
 
             switch (equipmentId) {
               case "burette":
-                // If flask exists, position burette above it
+                // Always position burette above flask if flask exists, or use intelligent positioning
                 if (flask) {
                   const autoX = flask.x;
-                  const autoY = flask.y - 180; // Position above flask
+                  const autoY = flask.y - 200; // Position well above flask
                   const distanceToFlask = Math.sqrt(
                     (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
                   );
 
-                  // Auto-snap if dropped within 150px of flask
-                  if (distanceToFlask < 150) {
+                  // Auto-snap if dropped within 200px of flask OR if dropped in upper area
+                  if (distanceToFlask < 200 || dropY < flask.y) {
                     setToastMessage(
-                      "🔧 Auto-positioned burette above flask for titration setup!",
+                      "🔧 Burette positioned above flask for titration!",
                     );
                     setTimeout(() => setToastMessage(null), 3000);
-                    return { x: autoX, y: Math.max(50, autoY) };
+                    return { x: autoX, y: Math.max(80, autoY) };
                   }
                 }
-                // Default center-top position for burette
-                return { x: dropX, y: Math.max(120, dropY) };
+                // Default upper-center position for burette
+                return {
+                  x: Math.min(Math.max(200, dropX), window.innerWidth - 200),
+                  y: Math.max(80, Math.min(200, dropY)),
+                };
 
               case "conical_flask":
-                // If burette exists, position flask below it
+                // Position flask in optimal titration position
                 if (burette) {
                   const autoX = burette.x;
-                  const autoY = burette.y + 180; // Position below burette
+                  const autoY = burette.y + 200; // Position below burette
                   const distanceToBurette = Math.sqrt(
                     (dropX - burette.x) ** 2 + (dropY - burette.y) ** 2,
                   );
 
-                  // Auto-snap if dropped within 150px of burette
-                  if (distanceToBurette < 150) {
+                  // Auto-snap if dropped within 200px of burette OR in lower area
+                  if (distanceToBurette < 200 || dropY > burette.y) {
                     setToastMessage(
-                      "🔧 Auto-positioned flask below burette for titration setup!",
+                      "🔧 Flask positioned below burette for titration!",
+                    );
+                    setTimeout(() => setToastMessage(null), 3000);
+                    return {
+                      x: autoX,
+                      y: Math.min(window.innerHeight - 200, autoY),
+                    };
+                  }
+                }
+                // Default center position for flask
+                return {
+                  x: Math.min(Math.max(200, dropX), window.innerWidth - 200),
+                  y: Math.min(Math.max(300, dropY), window.innerHeight - 200),
+                };
+
+              case "magnetic_stirrer":
+                // Always position stirrer below flask if flask exists
+                if (flask) {
+                  const autoX = flask.x;
+                  const autoY = flask.y + 120; // Position below flask
+                  const distanceToFlask = Math.sqrt(
+                    (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
+                  );
+
+                  // Auto-snap if dropped within 150px of flask OR in lower area
+                  if (
+                    distanceToFlask < 150 ||
+                    (dropY > flask.y && Math.abs(dropX - flask.x) < 100)
+                  ) {
+                    setToastMessage(
+                      "🔧 Magnetic stirrer positioned under flask for mixing!",
                     );
                     setTimeout(() => setToastMessage(null), 3000);
                     return {
@@ -611,31 +644,11 @@ function VirtualLabApp({
                     };
                   }
                 }
-                // Default center position for flask
-                return { x: dropX, y: dropY };
-
-              case "magnetic_stirrer":
-                // If flask exists, position stirrer below/near it
-                if (flask) {
-                  const autoX = flask.x;
-                  const autoY = flask.y + 80; // Position below flask
-                  const distanceToFlask = Math.sqrt(
-                    (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
-                  );
-
-                  // Auto-snap if dropped within 120px of flask
-                  if (distanceToFlask < 120) {
-                    setToastMessage(
-                      "🔧 Auto-positioned stirrer under flask for mixing!",
-                    );
-                    setTimeout(() => setToastMessage(null), 3000);
-                    return {
-                      x: autoX,
-                      y: Math.min(window.innerHeight - 100, autoY),
-                    };
-                  }
-                }
-                return { x: dropX, y: dropY };
+                // Position stirrer in lower area by default
+                return {
+                  x: Math.min(Math.max(150, dropX), window.innerWidth - 150),
+                  y: Math.min(Math.max(400, dropY), window.innerHeight - 150),
+                };
 
               default:
                 return { x: dropX, y: dropY };
