@@ -605,7 +605,7 @@ function VirtualLabApp({
                 // Position flask in optimal titration position
                 if (burette) {
                   const autoX = burette.x;
-                  const autoY = burette.y + 200; // Position below burette
+                  const autoY = burette.y + 180; // Position below burette with proper spacing
                   const distanceToBurette = Math.sqrt(
                     (dropX - burette.x) ** 2 + (dropY - burette.y) ** 2,
                   );
@@ -618,14 +618,15 @@ function VirtualLabApp({
                     setTimeout(() => setToastMessage(null), 3000);
                     return {
                       x: autoX,
-                      y: Math.min(window.innerHeight - 200, autoY),
+                      y: Math.min(350, autoY), // Keep flask well above bottom
                     };
                   }
                 }
-                // Default center position for flask
+                // Default center position for flask - avoid bottom area
+                const workbenchCenterY = 250; // Center of workbench area
                 return {
-                  x: Math.min(Math.max(200, dropX), window.innerWidth - 200),
-                  y: Math.min(Math.max(300, dropY), window.innerHeight - 200),
+                  x: Math.min(Math.max(200, dropX), 600),
+                  y: Math.min(Math.max(200, dropY), workbenchCenterY),
                 };
 
               case "magnetic_stirrer":
