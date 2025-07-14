@@ -131,25 +131,8 @@ export default function Experiment() {
     }
   };
 
-  if (experimentLoading && !showFallback) {
-    console.log("Showing loading skeleton because experimentLoading is true");
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Skeleton className="h-8 w-64 mb-6" />
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <Skeleton className="h-96 w-full rounded-lg" />
-            </div>
-            <div>
-              <Skeleton className="h-48 w-full rounded-lg" />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Force bypass loading state - render content immediately
+  console.log("Bypassing loading state completely");
 
   // Fallback experiment data when loading fails
   const fallbackExperiment = {
