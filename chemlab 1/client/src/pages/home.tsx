@@ -38,12 +38,12 @@ export default function Home() {
     return matchesSearch && matchesCategory && matchesDifficulty;
   });
 
-  const categories = [
-    ...new Set(experiments?.map((exp) => exp.category) || []),
-  ];
-  const difficulties = [
-    ...new Set(experiments?.map((exp) => exp.difficulty) || []),
-  ];
+  const categories = Array.from(
+    new Set(experiments?.map((exp) => exp.category) || []),
+  );
+  const difficulties = Array.from(
+    new Set(experiments?.map((exp) => exp.difficulty) || []),
+  );
 
   if (error) {
     return (
