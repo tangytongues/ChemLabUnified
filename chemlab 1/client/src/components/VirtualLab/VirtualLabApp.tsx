@@ -647,7 +647,7 @@ function VirtualLabApp({
                     setTimeout(() => setToastMessage(null), 3000);
                     return {
                       x: autoX, // Perfect alignment
-                      y: Math.max(280, Math.min(320, autoY)),
+                      y: Math.max(320, Math.min(370, autoY)),
                     };
                   }
                 }
