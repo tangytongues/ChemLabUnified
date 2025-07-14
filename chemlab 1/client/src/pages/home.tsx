@@ -188,7 +188,10 @@ export default function Home() {
                   href={`/experiment/${index + 1}`}
                   className="block transform hover:scale-105 transition-transform"
                 >
-                  <ExperimentCard experiment={experiment} />
+                  <ExperimentCard
+                    experiment={experiment}
+                    onViewDetails={() => {}}
+                  />
                 </Link>
               ))}
             </div>
