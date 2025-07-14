@@ -24,7 +24,7 @@ export default function ProgressModal({ children }: ProgressModalProps) {
     const progress = userProgress?.find(
       (p: any) => p.experimentId === experimentId,
     );
-    return progress ? progress.progress : 0;
+    return progress ? progress.currentStep : 0;
   };
 
   const getTotalProgress = () => {
