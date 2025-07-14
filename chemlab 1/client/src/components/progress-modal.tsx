@@ -46,7 +46,7 @@ export default function ProgressModal({ children }: ProgressModalProps) {
       const experiment = experiments.find(
         (exp: any) => exp.id === p.experimentId,
       );
-      return experiment && p.progress >= experiment.steps.length;
+      return experiment && p.currentStep >= experiment.steps;
     }).length;
   };
 
