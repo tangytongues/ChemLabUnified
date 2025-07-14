@@ -1057,7 +1057,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
   return (
     <>
       <div
-        draggable
+        draggable={true}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragOver={isContainer ? handleChemicalDragOver : undefined}
@@ -1082,6 +1082,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
           top: isOnWorkbench && position ? position.y : "auto",
           zIndex: isOnWorkbench ? 10 : "auto",
           transform: isOnWorkbench ? "translate(-50%, -50%)" : "none",
+          userSelect: "none", // Prevent text selection during drag
         }}
         title={
           isOnWorkbench
