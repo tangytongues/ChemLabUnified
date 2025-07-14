@@ -78,9 +78,13 @@ export const Equipment: React.FC<EquipmentProps> = ({
     // Create a cleaner drag image
     const dragElement = e.currentTarget as HTMLElement;
     dragElement.style.opacity = "0.8";
+    dragElement.style.transform = "scale(0.95)";
 
-    // Log for debugging
-    console.log(`Dragging equipment: ${id}`);
+    // Log for debugging - especially for magnetic stirrer
+    console.log(`🎯 Dragging equipment: ${id} (${name})`);
+    if (id === "magnetic_stirrer") {
+      console.log("🧲 Magnetic stirrer drag started!");
+    }
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
