@@ -623,10 +623,12 @@ function VirtualLabApp({
                 };
 
               case "magnetic_stirrer":
+                console.log(`Positioning magnetic stirrer`);
                 // Always position stirrer at the bottom of the screen
+                const bottomY = Math.max(300, window.innerHeight - 150); // Ensure it's visible
                 if (flask) {
                   const autoX = flask.x;
-                  const autoY = window.innerHeight - 120; // Position at bottom of screen
+                  const autoY = bottomY;
                   const distanceToFlask = Math.sqrt(
                     (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
                   );
@@ -640,6 +642,9 @@ function VirtualLabApp({
                       "🔧 Magnetic stirrer positioned at the bottom under flask!",
                     );
                     setTimeout(() => setToastMessage(null), 3000);
+                    console.log(
+                      `Magnetic stirrer auto-positioned at x=${autoX}, y=${autoY}`,
+                    );
                     return {
                       x: autoX,
                       y: autoY,
@@ -647,9 +652,16 @@ function VirtualLabApp({
                   }
                 }
                 // Position stirrer at bottom of screen by default
+                const defaultX = Math.min(
+                  Math.max(150, dropX),
+                  window.innerWidth - 150,
+                );
+                console.log(
+                  `Magnetic stirrer default position: x=${defaultX}, y=${bottomY}`,
+                );
                 return {
-                  x: Math.min(Math.max(150, dropX), window.innerWidth - 150),
-                  y: window.innerHeight - 120, // Always at bottom
+                  x: defaultX,
+                  y: bottomY, // Always at bottom
                 };
 
               default:
