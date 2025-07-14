@@ -190,6 +190,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
     "conical_flask",
     "test_tubes",
     "beakers",
+    "graduated_cylinder",
   ].includes(id);
 
   // Calculate mixed color from all chemicals
