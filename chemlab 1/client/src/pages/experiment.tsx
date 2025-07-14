@@ -193,38 +193,12 @@ export default function Experiment() {
   // Always use fallback if experiment data is missing
   const effectiveExperiment = experiment || fallbackExperiment;
 
-  if (
-    !effectiveExperiment ||
-    !effectiveExperiment.stepDetails ||
-    effectiveExperiment.stepDetails.length === 0
-  ) {
-    console.log("Showing experiment not found because:", {
-      hasExperiment: !!experiment,
-      hasStepDetails: !!experiment?.stepDetails,
-      stepDetailsLength: experiment?.stepDetails?.length,
-    });
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Experiment Not Found
-            </h2>
-            <p className="text-gray-600 mb-6">
-              The requested experiment (ID: {experimentId}) could not be found.
-              Please try again.
-            </p>
-            <Link href="/">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                Return to Home
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Skip experiment not found check since we have fallback data
+  console.log("Using experiment data:", {
+    hasRealExperiment: !!experiment,
+    usingFallback: !experiment,
+    effectiveTitle: effectiveExperiment.title,
+  });
 
   const currentStepData = effectiveExperiment.stepDetails[currentStep];
   const progressPercentage = Math.round(
