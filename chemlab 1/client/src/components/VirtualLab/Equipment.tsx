@@ -80,6 +80,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
+    console.log(`Drag ended for equipment: ${id}`);
     setIsDragging(false);
     const dragElement = e.currentTarget as HTMLElement;
     dragElement.style.opacity = "1";
