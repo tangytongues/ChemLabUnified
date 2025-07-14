@@ -629,9 +629,9 @@ function VirtualLabApp({
                 };
 
               case "magnetic_stirrer":
-                console.log(`Positioning magnetic stirrer`);
-                // Always position stirrer at the bottom of the screen
-                const bottomY = Math.max(300, window.innerHeight - 150); // Ensure it's visible
+                // Position stirrer at bottom of workbench area
+                const workbenchHeight = 500; // Height of workbench area
+                const bottomY = Math.max(350, workbenchHeight - 80); // Position near bottom of workbench
                 if (flask) {
                   const autoX = flask.x;
                   const autoY = bottomY;
@@ -645,29 +645,23 @@ function VirtualLabApp({
                     (dropY > flask.y && Math.abs(dropX - flask.x) < 100)
                   ) {
                     setToastMessage(
-                      "🔧 Magnetic stirrer positioned at the bottom under flask!",
+                      "🔧 Magnetic stirrer positioned under flask!",
                     );
                     setTimeout(() => setToastMessage(null), 3000);
-                    console.log(
-                      `Magnetic stirrer auto-positioned at x=${autoX}, y=${autoY}`,
-                    );
                     return {
                       x: autoX,
                       y: autoY,
                     };
                   }
                 }
-                // Position stirrer at bottom of screen by default
+                // Position stirrer at bottom of workbench by default
                 const defaultX = Math.min(
-                  Math.max(150, dropX),
-                  window.innerWidth - 150,
-                );
-                console.log(
-                  `Magnetic stirrer default position: x=${defaultX}, y=${bottomY}`,
+                  Math.max(100, dropX),
+                  800, // Fixed workbench width
                 );
                 return {
                   x: defaultX,
-                  y: bottomY, // Always at bottom
+                  y: bottomY,
                 };
 
               default:
