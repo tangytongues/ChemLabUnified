@@ -422,38 +422,38 @@ export const Equipment: React.FC<EquipmentProps> = ({
       if (id === "magnetic_stirrer" && isOnWorkbench) {
         return (
           <div className="relative">
-            {/* Magnetic stirrer base */}
-            <div className="w-32 h-20 bg-gradient-to-b from-gray-300 to-gray-600 rounded-lg shadow-lg relative">
-              <div className="absolute inset-2 bg-gray-800 rounded-md"></div>
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F1a9b24906fa84be2b69896b5634a3dd3%2F6ec0b9be54184506ac8daf8a5c4fe46a?format=webp&width=800"
+              alt="Magnetic Stirrer"
+              className="w-40 h-24 object-contain"
+              style={{
+                filter: "drop-shadow(0 10px 25px rgba(0,0,0,0.2))",
+              }}
+            />
 
-              {/* Control panel */}
-              <div className="absolute top-2 right-2 space-y-1">
-                <div className="w-6 h-4 bg-black rounded text-white text-[8px] flex items-center justify-center font-mono">
-                  {chemicals.length > 0 ? "ON" : "OFF"}
-                </div>
-                <div className="w-3 h-3 bg-green-500 rounded-full opacity-80"></div>
-              </div>
-
-              {/* Stirring platform */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-12 bg-gray-200 rounded-lg border-2 border-gray-400">
-                {/* Magnetic stir bar when active */}
-                {chemicals.length > 0 && (
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <div
-                      className="w-8 h-1 bg-white border border-gray-400 rounded-full shadow"
-                      style={{
-                        animationName: "spin",
-                        animationDuration: "0.8s",
-                        animationIterationCount: "infinite",
-                        animationTimingFunction: "linear",
-                      }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-white rounded-full"></div>
-                    </div>
-                  </div>
-                )}
-              </div>
+            {/* Status indicator */}
+            <div className="absolute top-1 right-1 space-y-1">
+              <div
+                className={`w-3 h-3 rounded-full ${chemicals.length > 0 ? "bg-green-500 animate-pulse" : "bg-gray-400"}`}
+              ></div>
             </div>
+
+            {/* Animated stir bar when chemicals are present */}
+            {chemicals.length > 0 && (
+              <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
+                <div
+                  className="w-8 h-1 bg-white border border-gray-400 rounded-full shadow opacity-60"
+                  style={{
+                    animationName: "spin",
+                    animationDuration: "0.8s",
+                    animationIterationCount: "infinite",
+                    animationTimingFunction: "linear",
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-white rounded-full"></div>
+                </div>
+              </div>
+            )}
 
             {/* Equipment label */}
             <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-center">
