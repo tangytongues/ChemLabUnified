@@ -38,6 +38,20 @@ export default function Experiment() {
   const { data: progress } = useExperimentProgress(experimentId);
   const updateProgressMutation = useUpdateProgress();
 
+  // Debug logging
+  console.log("Experiment page debug:", {
+    experimentId,
+    experimentLoading,
+    experiment: experiment
+      ? {
+          id: experiment.id,
+          title: experiment.title,
+          stepDetails: experiment.stepDetails?.length,
+        }
+      : null,
+    error: error?.message,
+  });
+
   const [currentStep, setCurrentStep] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [timer, setTimer] = useState(0);
