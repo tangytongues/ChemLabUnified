@@ -632,7 +632,7 @@ function VirtualLabApp({
                 // Position stirrer directly below conical flask if it exists
                 if (flask) {
                   const autoX = flask.x; // Perfect horizontal alignment
-                  const autoY = flask.y + 90; // Position below flask
+                  const autoY = flask.y + 120; // Position lower below flask
                   const distanceToFlask = Math.sqrt(
                     (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
                   );
