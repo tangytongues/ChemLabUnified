@@ -595,17 +595,17 @@ function VirtualLabApp({
                     return { x: autoX, y: Math.max(80, autoY) };
                   }
                 }
-                // Default upper-center position for burette
+                // Default center position for burette - centered on workbench
                 return {
-                  x: Math.min(Math.max(200, dropX), window.innerWidth - 200),
-                  y: Math.max(80, Math.min(200, dropY)),
+                  x: Math.min(Math.max(300, dropX), 450), // Centered horizontally
+                  y: Math.max(60, Math.min(120, dropY)),
                 };
 
               case "conical_flask":
                 // Position flask in optimal titration position
                 if (burette) {
-                  const autoX = burette.x;
-                  const autoY = burette.y + 120; // Position below burette with proper spacing
+                  const autoX = burette.x; // Perfect horizontal alignment
+                  const autoY = burette.y + 160; // Position below burette with proper spacing
                   const distanceToBurette = Math.sqrt(
                     (dropX - burette.x) ** 2 + (dropY - burette.y) ** 2,
                   );
@@ -613,26 +613,26 @@ function VirtualLabApp({
                   // Auto-snap if dropped within 200px of burette OR in lower area
                   if (distanceToBurette < 200 || dropY > burette.y) {
                     setToastMessage(
-                      "🔧 Flask positioned below burette for titration!",
+                      "🔧 Flask aligned below burette for titration!",
                     );
                     setTimeout(() => setToastMessage(null), 3000);
                     return {
-                      x: autoX,
-                      y: Math.min(150, autoY), // Keep flask well above stirrer area
+                      x: autoX, // Perfect alignment
+                      y: Math.max(180, Math.min(240, autoY)),
                     };
                   }
                 }
-                // Default center position for flask - place in middle area of workbench
+                // Default center position for flask - centered on workbench
                 return {
-                  x: Math.min(Math.max(200, dropX), 600),
-                  y: Math.min(Math.max(80, dropY), 150), // Position in middle area, away from bench
+                  x: Math.min(Math.max(300, dropX), 450), // Centered horizontally
+                  y: Math.min(Math.max(180, dropY), 240), // Position in middle area
                 };
 
               case "magnetic_stirrer":
                 // Position stirrer directly below conical flask if it exists
                 if (flask) {
-                  const autoX = flask.x;
-                  const autoY = flask.y + 80; // Position 80px below flask
+                  const autoX = flask.x; // Perfect horizontal alignment
+                  const autoY = flask.y + 90; // Position below flask
                   const distanceToFlask = Math.sqrt(
                     (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
                   );
@@ -643,20 +643,18 @@ function VirtualLabApp({
                     dropY > flask.y ||
                     Math.abs(dropX - flask.x) < 150
                   ) {
-                    setToastMessage(
-                      "🧲 Magnetic stirrer positioned directly below flask!",
-                    );
+                    setToastMessage("🧲 Magnetic stirrer aligned below flask!");
                     setTimeout(() => setToastMessage(null), 3000);
                     return {
-                      x: autoX,
-                      y: Math.min(250, autoY), // Keep stirrer in middle area, not at bottom
+                      x: autoX, // Perfect alignment
+                      y: Math.max(280, Math.min(320, autoY)),
                     };
                   }
                 }
-                // Default positioning if no flask present - middle area
+                // Default positioning if no flask present - centered on workbench
                 return {
-                  x: Math.min(Math.max(200, dropX), 600),
-                  y: Math.min(Math.max(180, dropY), 250), // Position in middle area
+                  x: Math.min(Math.max(300, dropX), 450), // Centered horizontally
+                  y: Math.min(Math.max(280, dropY), 320), // Position in lower area
                 };
 
               default:
