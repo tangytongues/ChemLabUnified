@@ -605,7 +605,7 @@ function VirtualLabApp({
                 // Position flask in optimal titration position
                 if (burette) {
                   const autoX = burette.x;
-                  const autoY = burette.y + 140; // Position below burette with proper spacing
+                  const autoY = burette.y + 120; // Position below burette with proper spacing
                   const distanceToBurette = Math.sqrt(
                     (dropX - burette.x) ** 2 + (dropY - burette.y) ** 2,
                   );
@@ -618,22 +618,21 @@ function VirtualLabApp({
                     setTimeout(() => setToastMessage(null), 3000);
                     return {
                       x: autoX,
-                      y: Math.min(200, autoY), // Keep flask in upper area
+                      y: Math.min(150, autoY), // Keep flask well above stirrer area
                     };
                   }
                 }
-                // Default center position for flask - place in upper area of workbench
-                const workbenchUpperY = 120; // Position in upper third of workbench
+                // Default center position for flask - place in middle area of workbench
                 return {
                   x: Math.min(Math.max(200, dropX), 600),
-                  y: Math.min(Math.max(100, dropY), workbenchUpperY),
+                  y: Math.min(Math.max(80, dropY), 150), // Position in middle area, away from bench
                 };
 
               case "magnetic_stirrer":
                 // Position stirrer directly below conical flask if it exists
                 if (flask) {
                   const autoX = flask.x;
-                  const autoY = flask.y + 120; // Position 120px below flask
+                  const autoY = flask.y + 80; // Position 80px below flask
                   const distanceToFlask = Math.sqrt(
                     (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
                   );
@@ -650,17 +649,14 @@ function VirtualLabApp({
                     setTimeout(() => setToastMessage(null), 3000);
                     return {
                       x: autoX,
-                      y: autoY,
+                      y: Math.min(250, autoY), // Keep stirrer in middle area, not at bottom
                     };
                   }
                 }
-                // Default positioning if no flask present
-                const workbenchHeight = 400;
-                const defaultY = Math.max(300, workbenchHeight - 100);
-                const defaultX = Math.min(Math.max(100, dropX), 600);
+                // Default positioning if no flask present - middle area
                 return {
-                  x: defaultX,
-                  y: defaultY,
+                  x: Math.min(Math.max(200, dropX), 600),
+                  y: Math.min(Math.max(180, dropY), 250), // Position in middle area
                 };
 
               default:
@@ -1979,7 +1975,7 @@ function VirtualLabApp({
                     setShowCompletionModal(false);
                     // Trigger confetti or celebration animation
                     setToastMessage(
-                      "🎉 Experiment completed! Check your progress.",
+                      "�� Experiment completed! Check your progress.",
                     );
                     setTimeout(() => setToastMessage(null), 4000);
                   }}
