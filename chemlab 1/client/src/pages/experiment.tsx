@@ -200,10 +200,24 @@ export default function Experiment() {
     effectiveTitle: effectiveExperiment.title,
   });
 
-  const currentStepData = effectiveExperiment.stepDetails[currentStep];
-  const progressPercentage = Math.round(
-    ((currentStep + 1) / effectiveExperiment.stepDetails.length) * 100,
+  // Ensure currentStep is within valid range
+  const safeCurrentStep = Math.max(
+    0,
+    Math.min(currentStep, effectiveExperiment.stepDetails.length - 1),
   );
+  const currentStepData =
+    effectiveExperiment.stepDetails[safeCurrentStep] ||
+    effectiveExperiment.stepDetails[0];
+  const progressPercentage = Math.round(
+    ((safeCurrentStep + 1) / effectiveExperiment.stepDetails.length) * 100,
+  );
+
+  console.log("Step data debug:", {
+    currentStep,
+    safeCurrentStep,
+    stepDetailsLength: effectiveExperiment.stepDetails.length,
+    hasCurrentStepData: !!currentStepData,
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
