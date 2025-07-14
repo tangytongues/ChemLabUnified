@@ -581,7 +581,7 @@ function VirtualLabApp({
                 // Always position burette above flask if flask exists, or use intelligent positioning
                 if (flask) {
                   const autoX = flask.x;
-                  const autoY = flask.y - 200; // Position well above flask
+                  const autoY = flask.y - 140; // Position closer to flask opening
                   const distanceToFlask = Math.sqrt(
                     (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
                   );
@@ -595,17 +595,17 @@ function VirtualLabApp({
                     return { x: autoX, y: Math.max(80, autoY) };
                   }
                 }
-                // Default upper-center position for burette
+                // Default center position for burette - centered on workbench
                 return {
-                  x: Math.min(Math.max(200, dropX), window.innerWidth - 200),
-                  y: Math.max(80, Math.min(200, dropY)),
+                  x: Math.min(Math.max(300, dropX), 450), // Centered horizontally
+                  y: Math.max(60, Math.min(120, dropY)),
                 };
 
               case "conical_flask":
                 // Position flask in optimal titration position
                 if (burette) {
-                  const autoX = burette.x;
-                  const autoY = burette.y + 200; // Position below burette
+                  const autoX = burette.x; // Perfect horizontal alignment
+                  const autoY = burette.y + 140; // Position below burette with closer spacing
                   const distanceToBurette = Math.sqrt(
                     (dropX - burette.x) ** 2 + (dropY - burette.y) ** 2,
                   );
@@ -613,61 +613,48 @@ function VirtualLabApp({
                   // Auto-snap if dropped within 200px of burette OR in lower area
                   if (distanceToBurette < 200 || dropY > burette.y) {
                     setToastMessage(
-                      "🔧 Flask positioned below burette for titration!",
+                      "🔧 Flask aligned below burette for titration!",
                     );
                     setTimeout(() => setToastMessage(null), 3000);
                     return {
-                      x: autoX,
-                      y: Math.min(window.innerHeight - 200, autoY),
+                      x: autoX, // Perfect alignment
+                      y: Math.max(180, Math.min(240, autoY)),
                     };
                   }
                 }
-                // Default center position for flask
+                // Default center position for flask - centered on workbench
                 return {
-                  x: Math.min(Math.max(200, dropX), window.innerWidth - 200),
-                  y: Math.min(Math.max(300, dropY), window.innerHeight - 200),
+                  x: Math.min(Math.max(300, dropX), 450), // Centered horizontally
+                  y: Math.min(Math.max(180, dropY), 240), // Position in middle area
                 };
 
               case "magnetic_stirrer":
-                console.log(`Positioning magnetic stirrer`);
-                // Always position stirrer at the bottom of the screen
-                const bottomY = Math.max(300, window.innerHeight - 150); // Ensure it's visible
+                // Position stirrer directly below conical flask if it exists
                 if (flask) {
-                  const autoX = flask.x;
-                  const autoY = bottomY;
+                  const autoX = flask.x; // Perfect horizontal alignment
+                  const autoY = flask.y + 120; // Position lower below flask
                   const distanceToFlask = Math.sqrt(
                     (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
                   );
 
-                  // Auto-snap if dropped within 150px of flask OR in lower area
+                  // Auto-snap if dropped anywhere near flask or in lower area
                   if (
-                    distanceToFlask < 150 ||
-                    (dropY > flask.y && Math.abs(dropX - flask.x) < 100)
+                    distanceToFlask < 200 ||
+                    dropY > flask.y ||
+                    Math.abs(dropX - flask.x) < 150
                   ) {
-                    setToastMessage(
-                      "🔧 Magnetic stirrer positioned at the bottom under flask!",
-                    );
+                    setToastMessage("🧲 Magnetic stirrer aligned below flask!");
                     setTimeout(() => setToastMessage(null), 3000);
-                    console.log(
-                      `Magnetic stirrer auto-positioned at x=${autoX}, y=${autoY}`,
-                    );
                     return {
-                      x: autoX,
-                      y: autoY,
+                      x: autoX, // Perfect alignment
+                      y: Math.max(320, Math.min(370, autoY)),
                     };
                   }
                 }
-                // Position stirrer at bottom of screen by default
-                const defaultX = Math.min(
-                  Math.max(150, dropX),
-                  window.innerWidth - 150,
-                );
-                console.log(
-                  `Magnetic stirrer default position: x=${defaultX}, y=${bottomY}`,
-                );
+                // Default positioning if no flask present - centered on workbench
                 return {
-                  x: defaultX,
-                  y: bottomY, // Always at bottom
+                  x: Math.min(Math.max(300, dropX), 450), // Centered horizontally
+                  y: Math.min(Math.max(320, dropY), 370), // Position lower in workbench
                 };
 
               default:
@@ -1986,7 +1973,7 @@ function VirtualLabApp({
                     setShowCompletionModal(false);
                     // Trigger confetti or celebration animation
                     setToastMessage(
-                      "🎉 Experiment completed! Check your progress.",
+                      "�� Experiment completed! Check your progress.",
                     );
                     setTimeout(() => setToastMessage(null), 4000);
                   }}

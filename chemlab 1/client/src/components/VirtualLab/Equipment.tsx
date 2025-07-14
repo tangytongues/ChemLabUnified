@@ -61,6 +61,10 @@ export const Equipment: React.FC<EquipmentProps> = ({
     // Set both equipment and text/plain for broader compatibility
     e.dataTransfer.setData("equipment", id);
     e.dataTransfer.setData("text/plain", id);
+    e.dataTransfer.setData(
+      "application/json",
+      JSON.stringify({ type: "equipment", id }),
+    );
     setShowContextMenu(false);
     setIsDragging(true);
     setDragStartTime(Date.now());
@@ -74,16 +78,25 @@ export const Equipment: React.FC<EquipmentProps> = ({
     // Create a cleaner drag image
     const dragElement = e.currentTarget as HTMLElement;
     dragElement.style.opacity = "0.8";
+    dragElement.style.transform = "scale(0.95)";
 
-    // Log for debugging
-    console.log(`Dragging equipment: ${id}`);
+    // Log for debugging - especially for magnetic stirrer
+    console.log(`🎯 Dragging equipment: ${id} (${name})`);
+    if (id === "magnetic_stirrer") {
+      console.log("🧲 Magnetic stirrer drag started!");
+    }
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
-    console.log(`Drag ended for equipment: ${id}`);
+    console.log(`🏁 Drag ended for equipment: ${id} (${name})`);
     setIsDragging(false);
     const dragElement = e.currentTarget as HTMLElement;
     dragElement.style.opacity = "1";
+    dragElement.style.transform = "";
+
+    if (id === "magnetic_stirrer") {
+      console.log("🧲 Magnetic stirrer drag ended!");
+    }
 
     // Reset any drag-related states after a short delay to ensure clean state
     setTimeout(() => {
@@ -410,22 +423,29 @@ export const Equipment: React.FC<EquipmentProps> = ({
         return (
           <div className="relative">
             <img
-              src="https://cdn.builder.io/api/v1/image/assets%2F3ac4fed498614db287eb1f9aa48832e0%2F944119ead4d7422f8aa8d8b102b198e4?format=webp&width=800"
+              src="https://cdn.builder.io/api/v1/image/assets%2F1a9b24906fa84be2b69896b5634a3dd3%2F6ec0b9be54184506ac8daf8a5c4fe46a?format=webp&width=800"
               alt="Magnetic Stirrer"
-              className="w-32 h-24 object-contain"
+              className="w-40 h-24 object-contain"
               style={{
                 filter: "drop-shadow(0 10px 25px rgba(0,0,0,0.2))",
               }}
             />
 
+            {/* Status indicator */}
+            <div className="absolute top-1 right-1 space-y-1">
+              <div
+                className={`w-3 h-3 rounded-full ${chemicals.length > 0 ? "bg-green-500 animate-pulse" : "bg-gray-400"}`}
+              ></div>
+            </div>
+
             {/* Animated stir bar when chemicals are present */}
             {chemicals.length > 0 && (
-              <div className="absolute top-8 left-1/2 transform -translate-x-1/2">
+              <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
                 <div
-                  className="w-6 h-1 bg-white border border-gray-400 rounded-full shadow"
+                  className="w-8 h-1 bg-white border border-gray-400 rounded-full shadow opacity-60"
                   style={{
                     animationName: "spin",
-                    animationDuration: "0.5s",
+                    animationDuration: "0.8s",
                     animationIterationCount: "infinite",
                     animationTimingFunction: "linear",
                   }}
@@ -440,6 +460,9 @@ export const Equipment: React.FC<EquipmentProps> = ({
               <div className="bg-white border border-gray-300 px-2 py-1 rounded shadow text-xs font-semibold text-gray-800">
                 Magnetic Stirrer
               </div>
+              {chemicals.length > 0 && (
+                <div className="text-xs text-green-600 mt-1">● Active</div>
+              )}
             </div>
           </div>
         );
@@ -1043,7 +1066,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
   return (
     <>
       <div
-        draggable
+        draggable={true}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragOver={isContainer ? handleChemicalDragOver : undefined}
@@ -1068,6 +1091,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
           top: isOnWorkbench && position ? position.y : "auto",
           zIndex: isOnWorkbench ? 10 : "auto",
           transform: isOnWorkbench ? "translate(-50%, -50%)" : "none",
+          userSelect: "none", // Prevent text selection during drag
         }}
         title={
           isOnWorkbench
