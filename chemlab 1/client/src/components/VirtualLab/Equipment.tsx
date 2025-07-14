@@ -320,7 +320,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
         return (
           <div className="relative">
             <img
-              src="https://cdn.builder.io/api/v1/image/assets%2F697e1d72304b4a6ba798abf6498db515%2F121f315dcfa54f3da12d16d0302c30a1?format=webp&width=800"
+              src="https://cdn.builder.io/api/v1/image/assets%2F697e1d72304b4a6ba798abf6498db515%2F01095f65af064da795e5b66ed8ae9d05?format=webp&width=800"
               alt="250mL Conical Flask"
               className="w-40 h-48 object-contain"
               style={{
@@ -729,7 +729,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
       return (
         <div className="relative">
           <img
-            src="https://cdn.builder.io/api/v1/image/assets%2F697e1d72304b4a6ba798abf6498db515%2Fdd9ee8aa37e54d2980269dd0c87fd4c0?format=webp&width=800"
+            src="https://cdn.builder.io/api/v1/image/assets%2F697e1d72304b4a6ba798abf6498db515%2Fd59ee3d24ea843f48e301ae72cdd7b6c?format=webp&width=800"
             alt="50mL Burette"
             className="w-32 h-96 object-contain"
             style={{
