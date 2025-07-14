@@ -266,9 +266,11 @@ export default function Experiment() {
         {/* Experiment Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            {experiment.title}
+            {effectiveExperiment.title}
           </h1>
-          <p className="text-gray-600 mb-4">{experiment.description}</p>
+          <p className="text-gray-600 mb-4">
+            {effectiveExperiment.description}
+          </p>
 
           {/* Progress Bar */}
           <div className="flex items-center justify-between mb-2">
@@ -288,7 +290,7 @@ export default function Experiment() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span className="text-2xl">
-                  {experiment.title} - Virtual Laboratory
+                  {effectiveExperiment.title} - Virtual Laboratory
                 </span>
                 <div className="flex items-center space-x-4">
                   <Button
@@ -314,13 +316,15 @@ export default function Experiment() {
                       <ArrowLeft className="h-4 w-4" />
                     </Button>
                     <span className="text-sm text-gray-600 px-2">
-                      {currentStep + 1} / {experiment.stepDetails.length}
+                      {currentStep + 1} /{" "}
+                      {effectiveExperiment.stepDetails.length}
                     </span>
                     <Button
                       variant="outline"
                       onClick={handleNextStep}
                       disabled={
-                        currentStep === experiment.stepDetails.length - 1
+                        currentStep ===
+                        effectiveExperiment.stepDetails.length - 1
                       }
                       size="sm"
                     >
@@ -337,9 +341,9 @@ export default function Experiment() {
                 onStepComplete={handleCompleteStep}
                 isActive={isActive}
                 stepNumber={currentStep + 1}
-                totalSteps={experiment.stepDetails.length}
-                experimentTitle={experiment.title}
-                allSteps={experiment.stepDetails}
+                totalSteps={effectiveExperiment.stepDetails.length}
+                experimentTitle={effectiveExperiment.title}
+                allSteps={effectiveExperiment.stepDetails}
               />
             </CardContent>
           </Card>
