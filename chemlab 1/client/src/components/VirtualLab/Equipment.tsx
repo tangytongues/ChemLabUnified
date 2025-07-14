@@ -409,75 +409,36 @@ export const Equipment: React.FC<EquipmentProps> = ({
       if (id === "magnetic_stirrer" && isOnWorkbench) {
         return (
           <div className="relative">
-            {/* Realistic Magnetic Stirrer */}
-            <div className="relative w-24 h-16">
-              {/* Stirrer base */}
-              <div className="absolute bottom-0 w-full h-12 bg-gradient-to-b from-gray-100 to-gray-300 border-2 border-gray-400 rounded-lg shadow-lg">
-                {/* Base texture */}
-                <div className="absolute inset-1 bg-gradient-to-br from-gray-50 to-gray-200 rounded-md"></div>
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F3ac4fed498614db287eb1f9aa48832e0%2F944119ead4d7422f8aa8d8b102b198e4?format=webp&width=800"
+              alt="Magnetic Stirrer"
+              className="w-32 h-24 object-contain"
+              style={{
+                filter: "drop-shadow(0 10px 25px rgba(0,0,0,0.2))",
+              }}
+            />
 
-                {/* Control panel */}
-                <div className="absolute top-1 right-1 w-16 h-4 bg-gray-800 rounded border border-gray-600">
-                  {/* Power indicator */}
-                  <div className="absolute top-0.5 left-0.5 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-
-                  {/* Speed control knob */}
-                  <div className="absolute top-0.5 right-0.5 w-3 h-3 bg-gray-400 rounded-full border border-gray-600">
-                    <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white rounded-full"></div>
-                  </div>
-
-                  {/* Speed indicator */}
-                  <div className="absolute top-1.5 left-3 right-5 h-0.5 bg-gray-600">
-                    <div className="absolute left-0 top-0 w-2/3 h-full bg-blue-400"></div>
-                  </div>
-                </div>
-
-                {/* Stirrer surface with hotplate appearance */}
-                <div className="absolute top-2 left-2 right-2 bottom-2 bg-gradient-to-r from-gray-200 via-white to-gray-200 border border-gray-300 rounded">
-                  {/* Stirrer plate markings */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-12 h-12 border-2 border-gray-300 rounded-full opacity-50"></div>
-                    <div className="absolute w-8 h-8 border border-gray-400 rounded-full opacity-30"></div>
-                    <div className="absolute w-4 h-4 border border-gray-500 rounded-full opacity-20"></div>
-                  </div>
-
-                  {/* Center indicator */}
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-gray-600 rounded-full"></div>
-                </div>
-
-                {/* Ventilation grilles */}
-                <div className="absolute left-1 top-1 bottom-1 w-2">
-                  {[...Array(8)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-full h-px bg-gray-500 mb-0.5"
-                    ></div>
-                  ))}
+            {/* Animated stir bar when chemicals are present */}
+            {chemicals.length > 0 && (
+              <div className="absolute top-8 left-1/2 transform -translate-x-1/2">
+                <div
+                  className="w-6 h-1 bg-white border border-gray-400 rounded-full shadow"
+                  style={{
+                    animationName: "spin",
+                    animationDuration: "0.5s",
+                    animationIterationCount: "infinite",
+                    animationTimingFunction: "linear",
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-white rounded-full"></div>
                 </div>
               </div>
+            )}
 
-              {/* Stir bar (when solution is present) */}
-              {chemicals.length > 0 && (
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2">
-                  <div
-                    className="w-6 h-1 bg-white border border-gray-400 rounded-full shadow"
-                    style={{
-                      animationName: "spin",
-                      animationDuration: "0.5s",
-                      animationIterationCount: "infinite",
-                      animationTimingFunction: "linear",
-                    }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-white rounded-full"></div>
-                  </div>
-                </div>
-              )}
-
-              {/* Equipment label */}
-              <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-center">
-                <div className="bg-white border border-gray-300 px-2 py-1 rounded shadow text-xs font-semibold text-gray-800">
-                  Magnetic Stirrer
-                </div>
+            {/* Equipment label */}
+            <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+              <div className="bg-white border border-gray-300 px-2 py-1 rounded shadow text-xs font-semibold text-gray-800">
+                Magnetic Stirrer
               </div>
             </div>
           </div>
