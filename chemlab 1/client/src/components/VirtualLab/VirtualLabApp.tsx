@@ -605,7 +605,7 @@ function VirtualLabApp({
                 // Position flask in optimal titration position
                 if (burette) {
                   const autoX = burette.x; // Perfect horizontal alignment
-                  const autoY = burette.y + 160; // Position below burette with proper spacing
+                  const autoY = burette.y + 140; // Position below burette with closer spacing
                   const distanceToBurette = Math.sqrt(
                     (dropX - burette.x) ** 2 + (dropY - burette.y) ** 2,
                   );
