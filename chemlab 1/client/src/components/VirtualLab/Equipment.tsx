@@ -482,7 +482,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
         return (
           <div className="relative">
             <img
-              src="https://cdn.builder.io/api/v1/image/assets%2Fd30aba391b974a07b1dc4ee95e17e59e%2F60a43d2a9504457b8647e336617950c9?format=webp&width=800"
+              src="https://cdn.builder.io/api/v1/image/assets%2F3ac4fed498614db287eb1f9aa48832e0%2Fcbb897db39e9400fa4cec1eb64f8d0b5?format=webp&width=800"
               alt="Graduated Cylinder"
               className="w-28 h-48 object-contain"
               style={{
