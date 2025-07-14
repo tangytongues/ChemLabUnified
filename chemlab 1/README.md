@@ -1,187 +1,228 @@
-# ChemLab Virtual - Interactive Chemistry Learning Platform
+# ChemLab Virtual Laboratory
 
-A full-stack web application that provides an interactive virtual chemistry laboratory environment for safe, hands-on learning through step-by-step guided experiments.
+A comprehensive virtual chemistry laboratory application featuring interactive experiments for educational purposes.
 
-![ChemLab Virtual Demo](https://via.placeholder.com/800x400/2563eb/ffffff?text=ChemLab+Virtual+Lab)
+![ChemLab Screenshot](https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=600)
 
-## 🧪 Features
+## 🧪 Available Experiments
 
-- **Interactive Virtual Lab**: Realistic lab equipment with drag-and-drop functionality
-- **Step-by-Step Experiments**: Guided chemistry experiments with safety protocols
-- **Progress Tracking**: Real-time progress monitoring and checkpoint system
-- **Professional Equipment**: SVG-based lab instruments (flasks, beakers, burners, thermometers)
-- **Safety Protocols**: Built-in safety guidelines and warnings
-- **Responsive Design**: Works on desktop and mobile devices
+### 1. Aspirin Synthesis
+
+- **Category:** Organic Chemistry
+- **Difficulty:** Intermediate
+- **Duration:** ~45 minutes
+- **Concepts:** Esterification reactions, purification techniques
+- **Equipment:** Erlenmeyer flasks, thermometer, water bath, vacuum filtration
+
+### 2. Acid-Base Titration
+
+- **Category:** Analytical Chemistry
+- **Difficulty:** Beginner
+- **Duration:** ~30 minutes
+- **Concepts:** Neutralization, endpoint detection, molarity calculations
+- **Equipment:** Burette, conical flask, pH meter, indicators
+
+## ✨ Features
+
+- 🔬 **Interactive Virtual Lab** - Realistic laboratory environment
+- 📊 **Real-time Data Analysis** - pH monitoring, statistical calculations
+- 🧮 **Automatic Calculations** - Molarity, yield, concentration analysis
+- 📈 **Results Tracking** - Trial logging, precision analysis
+- 🔍 **Chemical Formulas** - Complete reaction equations and mechanisms
+- ⚠️ **Safety Information** - Proper laboratory safety protocols
+- 📱 **Responsive Design** - Works on desktop and mobile devices
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Node.js 18+** (Download from [nodejs.org](https://nodejs.org/))
-- **npm** (Included with Node.js)
+- Node.js 16+
+- npm or yarn
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
-   git clone https://github.com/yourusername/chemlab-virtual.git
-   cd chemlab-virtual
+   git clone https://github.com/YOUR_USERNAME/chemlab-virtual-laboratory.git
+   cd chemlab-virtual-laboratory
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start the development server**
+
    ```bash
    npm run dev
    ```
 
 4. **Open your browser**
-   Navigate to `http://localhost:5000`
+   ```
+   http://localhost:5000
+   ```
 
-### Platform-Specific Quick Start
-
-#### Windows
-Double-click `start-windows.bat`
-
-#### Mac
-Double-click `start-mac.command`
-
-#### Linux
-Run `./start-linux.sh`
-
-## 📁 Project Structure
-
-```
-chemlab-virtual/
-├── client/                 # Frontend React application
-│   ├── src/
-│   │   ├── components/     # UI components
-│   │   │   ├── lab-equipment/  # Virtual lab equipment
-│   │   │   └── ui/         # Reusable UI components
-│   │   ├── pages/          # Application pages
-│   │   ├── hooks/          # Custom React hooks
-│   │   └── lib/            # Utility functions
-├── server/                 # Backend Express server
-│   ├── index.ts           # Main server file
-│   ├── routes.ts          # API routes
-│   ├── storage.ts         # Data storage layer
-│   └── vite.ts            # Vite integration
-├── shared/                # Shared types and schemas
-├── data/                  # Experiment data
-└── docs/                  # Documentation
-```
-
-## 🛠️ Technology Stack
-
-### Frontend
-- **React 18** with TypeScript
-- **Vite** for fast development and building
-- **Tailwind CSS** for styling
-- **shadcn/ui** component library
-- **TanStack Query** for state management
-- **Wouter** for routing
-
-### Backend
-- **Node.js** with Express
-- **TypeScript** for type safety
-- **Drizzle ORM** for database operations
-- **In-memory storage** (default) or PostgreSQL
-
-### Development Tools
-- **ESBuild** for fast compilation
-- **PostCSS** for CSS processing
-- **TypeScript** for type checking
-
-## 🧬 Available Experiments
-
-1. **Aspirin Synthesis**
-   - Learn organic chemistry synthesis
-   - Practice temperature control and timing
-   - Understand reaction mechanisms
-
-2. **Acid-Base Titration**
-   - Master analytical chemistry techniques
-   - Learn about pH indicators
-   - Practice precise measurements
-
-## 🎮 How to Use
-
-1. **Browse Experiments**: Start at the home page to see available experiments
-2. **Select an Experiment**: Click on any experiment card to begin
-3. **Follow Instructions**: Each step provides detailed guidance and safety information
-4. **Use Virtual Equipment**: Drag chemicals to equipment, control temperature, and monitor progress
-5. **Track Progress**: Complete checkpoints and advance through steps
-6. **View Results**: See your progress and experiment outcomes
-
-## 🔧 Development
-
-### Available Scripts
+## 📦 Available Scripts
 
 ```bash
 # Development
 npm run dev          # Start development server with hot reload
+
+# Production
 npm run build        # Build for production
-npm run start        # Start production server
+npm start           # Start production server
 
-# Database
-npm run db:push      # Push database schema changes
-
-# Type Checking
-npm run check        # Run TypeScript type checking
+# Development Tools
+npm run check       # TypeScript type checking
+npm run db:push     # Database operations (if using)
 ```
 
-### Environment Setup
+## 🏗️ Technology Stack
 
-1. **Copy environment template**
-   ```bash
-   cp .env.example .env
-   ```
+### Frontend
 
-2. **Configure environment variables** (optional)
-   ```env
-   NODE_ENV=development
-   DATABASE_URL=your_database_url_here
-   ```
+- **React 18** - Modern React with hooks
+- **TypeScript** - Type-safe development
+- **Vite** - Fast build tool and dev server
+- **Tailwind CSS** - Utility-first styling
+- **Radix UI** - Accessible component primitives
+- **Framer Motion** - Smooth animations
+- **Recharts** - Data visualization
 
-### Adding New Experiments
+### Backend
 
-1. Add experiment data to `data/experiments.json`
-2. Create step definitions with safety protocols
-3. Add any custom equipment components if needed
-4. Update experiment routing in the frontend
+- **Express.js** - Web framework
+- **TypeScript** - Server-side type safety
+- **Drizzle ORM** - Type-safe database operations
+- **Session Management** - User state persistence
+
+### Development Tools
+
+- **ESBuild** - Fast JavaScript bundler
+- **TSX** - TypeScript execution
+- **PostCSS** - CSS processing
+- **Autoprefixer** - CSS vendor prefixes
+
+## 📁 Project Structure
+
+```
+chemlab-virtual-laboratory/
+├── client/                 # Frontend React application
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── VirtualLab/     # Virtual lab components
+│   │   │   │   ├── VirtualLabApp.tsx
+│   │   │   │   ├── PHMeterSimulation.tsx
+│   │   │   │   ├── MeasurementsPanel.tsx
+│   │   │   │   ├── ChemicalFormulas.tsx
+│   │   │   │   ├── ResultsPanel.tsx
+│   │   │   │   └── ...
+│   │   │   └── ui/             # Reusable UI components
+│   │   ├── pages/              # Application pages
+│   │   ├── hooks/              # Custom React hooks
+│   │   └── lib/                # Utility functions
+│   └── index.html
+├── server/                 # Backend Express application
+│   ├── index.ts           # Main server file
+│   ├── routes.ts          # API routes
+│   ├── storage.ts         # Data persistence
+│   └── vite.ts            # Vite integration
+├── data/
+│   └── experiments.json   # Experiment configurations
+├── shared/                # Shared TypeScript types
+└── package.json
+```
+
+## 🧪 Experiment Details
+
+### Aspirin Synthesis
+
+Experience the classic organic chemistry synthesis:
+
+- Measure reagents (salicylic acid, acetic anhydride)
+- Add phosphoric acid catalyst
+- Heat reaction mixture to 85°C
+- Crystallization and purification
+- Yield calculations and purity testing
+
+### Acid-Base Titration
+
+Master analytical chemistry techniques:
+
+- Set up burette and conical flask
+- Add phenolphthalein indicator
+- Titrate HCl with standardized NaOH
+- Detect color change endpoint
+- Calculate unknown concentration
+- Statistical analysis of multiple trials
+
+## 🔧 Configuration
+
+### Environment Variables
+
+```bash
+NODE_ENV=development|production
+PORT=5000
+DATABASE_URL=your_database_url (optional)
+```
+
+### Database Setup (Optional)
+
+```bash
+npm run db:push    # Initialize database schema
+```
 
 ## 🚀 Deployment
 
-### Local Production Build
+### Local Production
 
 ```bash
 npm run build
-npm run start
+npm start
 ```
 
-### Docker Deployment
+### Docker
 
 ```bash
-docker build -t chemlab-virtual .
-docker run -p 5000:5000 chemlab-virtual
+docker build -t chemlab .
+docker run -p 5000:5000 chemlab
 ```
 
-### Cloud Deployment Options
+### Cloud Platforms
 
-- **Vercel**: Connect your GitHub repository for automatic deployments
-- **Netlify**: Deploy the built frontend with serverless functions
-- **Railway**: Full-stack deployment with database
-- **Heroku**: Traditional PaaS deployment
+- **Vercel:** Deploy with zero configuration
+- **Railway:** Full-stack deployment
+- **Replit:** Development and hosting
+- **Heroku:** Traditional PaaS deployment
 
-## 🛡️ Safety Features
+## 📊 Features in Detail
 
-- **Virtual Environment**: All experiments are simulated - completely safe
-- **Safety Warnings**: Each step includes relevant safety information
-- **Progress Validation**: Students must complete requirements before proceeding
-- **Error Prevention**: Built-in safeguards prevent dangerous virtual operations
+### pH Meter Simulation
+
+- Real-time pH monitoring with drift and noise
+- Calibration procedures with buffer solutions
+- Temperature compensation
+- Measurement history logging
+- Battery level simulation
+
+### Statistical Analysis
+
+- Multiple trial tracking
+- Mean, standard deviation, RSD calculations
+- Precision assessment (Excellent/Good/Acceptable/Poor)
+- Molarity calculations from titration data
+- Experimental observation logging
+
+### Chemical Reaction Engine
+
+- Dynamic color mixing based on chemical combinations
+- Realistic reaction detection
+- Balanced chemical equations
+- Reaction mechanisms and thermodynamics
+- Safety information and protocols
 
 ## 🤝 Contributing
 
@@ -191,39 +232,22 @@ docker run -p 5000:5000 chemlab-virtual
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-### Development Guidelines
-
-- Follow TypeScript best practices
-- Use the existing component structure
-- Add tests for new features
-- Update documentation for any API changes
-- Ensure mobile responsiveness
-
-## 📄 License
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📞 Support
-
-- **Issues**: Report bugs and request features via [GitHub Issues](https://github.com/yourusername/chemlab-virtual/issues)
-- **Documentation**: Check the `/docs` folder for detailed guides
-- **Community**: Join discussions in the repository
-
 ## 🙏 Acknowledgments
 
-- Chemistry education community for feedback and requirements
-- Open source libraries that make this project possible
-- Educational institutions using virtual labs for safe learning
+- Chemistry educators for experimental procedures
+- React and TypeScript communities
+- Open source contributors
+- Educational institutions using virtual labs
 
-## 📊 Status
+## 📞 Support
 
-- ✅ Core virtual lab functionality
-- ✅ Two complete experiments (Aspirin, Titration)
-- ✅ Progress tracking and safety protocols
-- ✅ Mobile-responsive design
-- 🔄 Additional experiments (in progress)
-- 🔄 Multiplayer collaboration features (planned)
-- 🔄 Assessment and grading system (planned)
+- Create an issue for bug reports
+- Submit feature requests via GitHub Issues
+- Check the documentation for common solutions
 
 ---
 

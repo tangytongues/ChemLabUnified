@@ -316,6 +316,168 @@ export const Equipment: React.FC<EquipmentProps> = ({
         );
       }
 
+      if (id === "conical_flask" && isOnWorkbench) {
+        return (
+          <div className="relative">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F697e1d72304b4a6ba798abf6498db515%2F01095f65af064da795e5b66ed8ae9d05?format=webp&width=800"
+              alt="250mL Conical Flask"
+              className="w-40 h-48 object-contain"
+              style={{
+                filter: "drop-shadow(0 10px 25px rgba(0,0,0,0.2))",
+              }}
+            />
+
+            {/* Solution overlay on the realistic flask */}
+            {chemicals.length > 0 && (
+              <div
+                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 transition-all duration-700 ease-out"
+                style={{
+                  backgroundColor: getMixedColor(),
+                  width: "60%",
+                  height: `${Math.min(120, getSolutionHeight() * 1.2)}px`,
+                  opacity: 0.8,
+                  borderRadius: "0 0 60% 60%",
+                  clipPath: "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+                  boxShadow: "inset 0 -1px 2px rgba(0,0,0,0.1)",
+                }}
+              >
+                {/* Surface shimmer */}
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-white opacity-40 rounded-full"></div>
+
+                {/* Bubbling animation */}
+                {(chemicals.length > 1 || isHeating) && (
+                  <div className="absolute inset-0">
+                    {[...Array(isHeating ? 8 : 4)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute w-0.5 h-0.5 bg-white rounded-full opacity-80"
+                        style={{
+                          left: `${20 + (i % 3) * 20}%`,
+                          bottom: `${5 + (i % 2) * 10}px`,
+                          animationName: "bounce",
+                          animationDuration: isHeating ? "0.8s" : "1.2s",
+                          animationIterationCount: "infinite",
+                          animationDelay: `${i * 0.1}s`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {/* Endpoint color change indicator - pink for titration */}
+                {chemicals.some((c) => c.id === "naoh") &&
+                  chemicals.some((c) => c.id === "phenol") && (
+                    <div className="absolute inset-0">
+                      <div
+                        className="absolute inset-0 bg-pink-300 opacity-40 animate-pulse"
+                        style={{ animationDuration: "3s" }}
+                      ></div>
+                      <div className="absolute top-1 left-1/2 transform -translate-x-1/2 text-xs font-bold text-pink-700 bg-white bg-opacity-80 px-1 rounded">
+                        Endpoint!
+                      </div>
+                    </div>
+                  )}
+              </div>
+            )}
+
+            {/* Professional label */}
+            <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 text-center">
+              <div className="bg-white border border-gray-300 px-2 py-1 rounded shadow">
+                <div className="text-sm font-semibold text-gray-800">
+                  250mL Conical Flask
+                </div>
+              </div>
+              {chemicals.length > 0 && (
+                <div className="text-xs text-gray-600 mt-1">
+                  Vol:{" "}
+                  {chemicals.reduce((sum, c) => sum + c.amount, 0).toFixed(1)}
+                  mL
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+
+      if (id === "magnetic_stirrer" && isOnWorkbench) {
+        return (
+          <div className="relative">
+            {/* Realistic Magnetic Stirrer */}
+            <div className="relative w-24 h-16">
+              {/* Stirrer base */}
+              <div className="absolute bottom-0 w-full h-12 bg-gradient-to-b from-gray-100 to-gray-300 border-2 border-gray-400 rounded-lg shadow-lg">
+                {/* Base texture */}
+                <div className="absolute inset-1 bg-gradient-to-br from-gray-50 to-gray-200 rounded-md"></div>
+
+                {/* Control panel */}
+                <div className="absolute top-1 right-1 w-16 h-4 bg-gray-800 rounded border border-gray-600">
+                  {/* Power indicator */}
+                  <div className="absolute top-0.5 left-0.5 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+
+                  {/* Speed control knob */}
+                  <div className="absolute top-0.5 right-0.5 w-3 h-3 bg-gray-400 rounded-full border border-gray-600">
+                    <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white rounded-full"></div>
+                  </div>
+
+                  {/* Speed indicator */}
+                  <div className="absolute top-1.5 left-3 right-5 h-0.5 bg-gray-600">
+                    <div className="absolute left-0 top-0 w-2/3 h-full bg-blue-400"></div>
+                  </div>
+                </div>
+
+                {/* Stirrer surface with hotplate appearance */}
+                <div className="absolute top-2 left-2 right-2 bottom-2 bg-gradient-to-r from-gray-200 via-white to-gray-200 border border-gray-300 rounded">
+                  {/* Stirrer plate markings */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-12 h-12 border-2 border-gray-300 rounded-full opacity-50"></div>
+                    <div className="absolute w-8 h-8 border border-gray-400 rounded-full opacity-30"></div>
+                    <div className="absolute w-4 h-4 border border-gray-500 rounded-full opacity-20"></div>
+                  </div>
+
+                  {/* Center indicator */}
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-gray-600 rounded-full"></div>
+                </div>
+
+                {/* Ventilation grilles */}
+                <div className="absolute left-1 top-1 bottom-1 w-2">
+                  {[...Array(8)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-full h-px bg-gray-500 mb-0.5"
+                    ></div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Stir bar (when solution is present) */}
+              {chemicals.length > 0 && (
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2">
+                  <div
+                    className="w-6 h-1 bg-white border border-gray-400 rounded-full shadow"
+                    style={{
+                      animationName: "spin",
+                      animationDuration: "0.5s",
+                      animationIterationCount: "infinite",
+                      animationTimingFunction: "linear",
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-white rounded-full"></div>
+                  </div>
+                </div>
+              )}
+
+              {/* Equipment label */}
+              <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-center">
+                <div className="bg-white border border-gray-300 px-2 py-1 rounded shadow text-xs font-semibold text-gray-800">
+                  Magnetic Stirrer
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
       if (id === "graduated_cylinder" || id === "burette") {
         return (
           <div className="relative">
@@ -566,100 +728,93 @@ export const Equipment: React.FC<EquipmentProps> = ({
     if (id === "burette" && isOnWorkbench) {
       return (
         <div className="relative">
-          {/* Realistic Burette */}
-          <div className="relative w-8 h-32">
-            {/* Main burette tube */}
-            <div className="absolute inset-x-1 top-0 bottom-4 bg-gradient-to-b from-transparent to-gray-100 border-2 border-gray-400 rounded-b-lg overflow-hidden shadow-md">
-              {/* Solution in burette with improved animation */}
-              {chemicals.length > 0 && (
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2F697e1d72304b4a6ba798abf6498db515%2F23076c6b585f423a9cedebd4d9cd3d6a?format=webp&width=800"
+            alt="50mL Burette"
+            className="w-32 h-96 object-contain"
+            style={{
+              filter: "drop-shadow(0 10px 25px rgba(0,0,0,0.2))",
+            }}
+          />
+
+          {/* Solution overlay on the realistic burette */}
+          {chemicals.length > 0 && (
+            <div
+              className="absolute bottom-16 left-1/2 transform -translate-x-1/2 transition-all duration-1000 ease-out"
+              style={{
+                height: `${Math.min((chemicals.reduce((sum, c) => sum + c.amount, 0) / 50) * 300, 300)}px`,
+                width: "12px",
+                background: `linear-gradient(180deg, ${getMixedColor()}f0, ${getMixedColor()})`,
+                opacity: 0.85,
+                borderRadius: "0 0 2px 2px",
+              }}
+            >
+              {/* Realistic meniscus curve */}
+              <div className="absolute top-0 left-0 right-0 h-1">
+                <div className="w-full h-full bg-white opacity-25 rounded-full transform scale-y-50"></div>
+              </div>
+
+              {/* Liquid texture and bubbles */}
+              <div className="absolute inset-0">
+                {/* Air bubbles */}
+                <div className="absolute top-3 left-1 w-0.5 h-0.5 bg-white opacity-60 rounded-full animate-pulse"></div>
                 <div
-                  className="absolute bottom-0 left-0 right-0 rounded-b-lg transition-all duration-700 ease-out"
+                  className="absolute top-6 right-1 w-0.5 h-0.5 bg-white opacity-40 rounded-full animate-pulse"
+                  style={{ animationDelay: "0.8s" }}
+                ></div>
+              </div>
+            </div>
+          )}
+
+          {/* Ultra-realistic drop animation */}
+          {isDropping && (
+            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+              <div className="relative">
+                {/* Main droplet */}
+                <div
+                  className="w-2 h-3 rounded-full animate-bounce shadow-sm"
+                  style={{
+                    background: `radial-gradient(circle at 30% 30%, ${getMixedColor()}aa, ${getMixedColor()})`,
+                    animationDuration: "0.6s",
+                  }}
+                ></div>
+
+                {/* Secondary smaller droplets */}
+                <div
+                  className="absolute top-4 left-1/2 transform -translate-x-1/2 w-1 h-1.5 rounded-full animate-bounce"
                   style={{
                     backgroundColor: getMixedColor(),
-                    height: `${getSolutionHeight()}%`,
-                    opacity: 0.85,
-                    backgroundImage: `linear-gradient(180deg, ${getMixedColor()}00 0%, ${getMixedColor()} 100%)`,
+                    animationDelay: "0.2s",
+                    animationDuration: "0.8s",
                   }}
-                >
-                  {/* Liquid surface with meniscus effect */}
-                  <div className="absolute top-0 left-0 right-0 h-1">
-                    <div className="w-full h-full bg-white opacity-40 rounded-full animate-pulse"></div>
-                  </div>
+                ></div>
 
-                  {/* Liquid movement animation */}
-                  <div className="absolute inset-0">
-                    <div
-                      className="absolute top-1 left-1 w-1 h-2 bg-white opacity-20 rounded-full"
-                      style={{
-                        animationName: "pulse",
-                        animationDuration: "2s",
-                        animationIterationCount: "infinite",
-                        animationDelay: "0.3s",
-                      }}
-                    ></div>
-                    <div
-                      className="absolute top-2 right-1 w-1 h-1 bg-white opacity-30 rounded-full"
-                      style={{
-                        animationName: "pulse",
-                        animationDuration: "2s",
-                        animationIterationCount: "infinite",
-                        animationDelay: "0.7s",
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              )}
-
-              {/* Volume markings with better positioning */}
-              <div className="absolute -right-10 inset-y-0 flex flex-col justify-between py-2">
-                <div className="text-[8px] text-gray-600 font-mono">50</div>
-                <div className="text-[8px] text-gray-600 font-mono">40</div>
-                <div className="text-[8px] text-gray-600 font-mono">30</div>
-                <div className="text-[8px] text-gray-600 font-mono">20</div>
-                <div className="text-[8px] text-gray-600 font-mono">10</div>
-                <div className="text-[8px] text-gray-600 font-mono">0</div>
-              </div>
-
-              {/* Scale lines */}
-              <div className="absolute right-0 inset-y-0 flex flex-col justify-between py-2">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="w-2 h-px bg-gray-500"></div>
-                ))}
+                {/* Droplet trail effect */}
+                <div
+                  className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-0.5 h-2 opacity-60"
+                  style={{ backgroundColor: getMixedColor() }}
+                ></div>
               </div>
             </div>
+          )}
 
-            {/* Realistic burette tap */}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-              <div className="w-3 h-3 bg-gradient-to-b from-gray-400 to-gray-600 rounded-full shadow-sm">
-                <div className="absolute top-0.5 left-0.5 w-2 h-2 bg-gradient-to-br from-gray-200 to-gray-400 rounded-full"></div>
+          {/* Professional equipment label */}
+          <div className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 text-center">
+            <div className="bg-white border-2 border-gray-300 px-3 py-2 rounded-lg shadow-lg">
+              <div className="text-sm font-bold text-gray-800">
+                50mL Burette
               </div>
-              {/* Tap handle */}
-              <div className="absolute -right-2 top-1 w-3 h-1 bg-gray-500 rounded-sm"></div>
+              <div className="text-xs text-gray-600 mt-1">
+                Precision: ±0.05mL
+              </div>
             </div>
-
-            {/* Enhanced drop animation when chemicals are added */}
-            {isDropping && (
-              <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
-                {/* Multiple droplets for more realistic effect */}
-                {[...Array(3)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute w-1 h-2 rounded-full"
-                    style={{
-                      backgroundColor: getMixedColor(),
-                      left: `${-2 + i}px`,
-                      animationName: "bounce",
-                      animationDuration: "0.8s",
-                      animationIterationCount: "infinite",
-                      animationDelay: `${i * 0.2}s`,
-                    }}
-                  />
-                ))}
-
-                {/* Splash effect */}
-                <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
-                  <div className="w-4 h-px bg-blue-300 opacity-50 animate-ping"></div>
-                </div>
+            <div className="text-xs text-blue-600 mt-2 bg-blue-50 px-2 py-1 rounded border">
+              Vol: {chemicals.reduce((sum, c) => sum + c.amount, 0).toFixed(2)}
+              mL
+            </div>
+            {chemicals.length > 0 && (
+              <div className="text-xs text-purple-600 mt-1">
+                {chemicals[0]?.name}
               </div>
             )}
           </div>

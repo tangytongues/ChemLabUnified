@@ -5,6 +5,9 @@ import { Chemical } from "./Chemical";
 import { Controls } from "./Controls";
 import { ResultsPanel } from "./ResultsPanel";
 import { ExperimentSteps } from "./ExperimentSteps";
+import { MeasurementsPanel } from "./MeasurementsPanel";
+import { PHMeterSimulation } from "./PHMeterSimulation";
+import { ChemicalFormulas } from "./ChemicalFormulas";
 import {
   FlaskConical,
   Atom,
@@ -110,6 +113,9 @@ function VirtualLabApp({
   const [wrongStepMessage, setWrongStepMessage] = useState("");
   const [completionTime, setCompletionTime] = useState<Date | null>(null);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [phMeterCalibrated, setPhMeterCalibrated] = useState(false);
+  const [showMeasurementsPanel, setShowMeasurementsPanel] = useState(false);
+  const [currentPH, setCurrentPH] = useState(7.0);
 
   const updateProgress = useUpdateProgress();
 
@@ -129,165 +135,302 @@ function VirtualLabApp({
       : [`${stepData.title} requirements`],
   }));
 
-  // Aspirin synthesis chemicals
   const experimentChemicals = useMemo(() => {
-    return [
-      {
-        id: "salicylic_acid",
-        name: "Salicylic Acid",
-        formula: "C₇H₆O₃",
-        color: "#F8F8FF",
-        concentration: "2.0 g",
-        volume: 25,
-      },
-      {
-        id: "acetic_anhydride",
-        name: "Acetic Anhydride",
-        formula: "(CH₃CO)₂O",
-        color: "#DDA0DD",
-        concentration: "5 mL",
-        volume: 50,
-      },
-      {
-        id: "phosphoric_acid",
-        name: "Phosphoric Acid",
-        formula: "H₃PO₄",
-        color: "#FFA500",
-        concentration: "Catalyst",
-        volume: 10,
-      },
-      {
-        id: "distilled_water",
-        name: "Distilled Water",
-        formula: "H₂O",
-        color: "#87CEEB",
-        concentration: "Pure",
-        volume: 100,
-      },
-    ];
-  }, []);
+    // Return different chemicals based on experiment type
+    if (experimentTitle.includes("Acid-Base")) {
+      // Titration chemicals
+      return [
+        {
+          id: "hcl",
+          name: "Hydrochloric Acid",
+          formula: "HCl",
+          color: "#FFE135",
+          concentration: "0.1 M",
+          volume: 25,
+        },
+        {
+          id: "naoh",
+          name: "Sodium Hydroxide",
+          formula: "NaOH",
+          color: "#E0E0E0",
+          concentration: "0.1 M",
+          volume: 50,
+        },
+        {
+          id: "phenol",
+          name: "Phenolphthalein",
+          formula: "C₂₀H₁₄O₄",
+          color: "#FFB6C1",
+          concentration: "Indicator",
+          volume: 5,
+        },
+        {
+          id: "distilled_water",
+          name: "Distilled Water",
+          formula: "H₂O",
+          color: "#87CEEB",
+          concentration: "Pure",
+          volume: 100,
+        },
+      ];
+    } else {
+      // Aspirin synthesis chemicals
+      return [
+        {
+          id: "salicylic_acid",
+          name: "Salicylic Acid",
+          formula: "C₇H₆O₃",
+          color: "#F8F8FF",
+          concentration: "2.0 g",
+          volume: 25,
+        },
+        {
+          id: "acetic_anhydride",
+          name: "Acetic Anhydride",
+          formula: "(CH₃CO)₂O",
+          color: "#DDA0DD",
+          concentration: "5 mL",
+          volume: 50,
+        },
+        {
+          id: "phosphoric_acid",
+          name: "Phosphoric Acid",
+          formula: "H₃PO₄",
+          color: "#FFA500",
+          concentration: "Catalyst",
+          volume: 10,
+        },
+        {
+          id: "distilled_water",
+          name: "Distilled Water",
+          formula: "H₂O",
+          color: "#87CEEB",
+          concentration: "Pure",
+          volume: 100,
+        },
+      ];
+    }
+  }, [experimentTitle]);
 
   const experimentEquipment = useMemo(() => {
-    return [
-      {
-        id: "erlenmeyer_flask",
-        name: "125mL Erlenmeyer Flask",
-        icon: (
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 36 36"
-            fill="none"
-            className="text-blue-600"
-          >
-            <path
-              d="M12 6h12v8l4 12H8l4-12V6z"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="rgba(59, 130, 246, 0.1)"
-            />
-            <path d="M10 6h16" stroke="currentColor" strokeWidth="2" />
-            <circle cx="18" cy="20" r="2" fill="rgba(59, 130, 246, 0.3)" />
-          </svg>
-        ),
-      },
-      {
-        id: "thermometer",
-        name: "Thermometer",
-        icon: (
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 36 36"
-            fill="none"
-            className="text-red-600"
-          >
-            <rect
-              x="16"
-              y="4"
-              width="4"
-              height="20"
-              rx="2"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="rgba(239, 68, 68, 0.1)"
-            />
-            <circle cx="18" cy="28" r="4" fill="currentColor" />
-            <path d="M18 24v-16" stroke="currentColor" strokeWidth="1" />
-          </svg>
-        ),
-      },
-      {
-        id: "graduated_cylinder",
-        name: "Graduated Cylinder",
-        icon: (
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 36 36"
-            fill="none"
-            className="text-green-600"
-          >
-            <rect
-              x="12"
-              y="6"
-              width="12"
-              height="24"
-              rx="1"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="rgba(34, 197, 94, 0.1)"
-            />
-            <path
-              d="M14 12h8M14 16h8M14 20h8M14 24h8"
-              stroke="currentColor"
-              strokeWidth="1"
-            />
-            <rect
-              x="10"
-              y="4"
-              width="16"
-              height="4"
-              rx="1"
-              stroke="currentColor"
-              strokeWidth="1"
-            />
-          </svg>
-        ),
-      },
-      {
-        id: "water_bath",
-        name: "Water Bath",
-        icon: (
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 36 36"
-            fill="none"
-            className="text-orange-600"
-          >
-            <rect
-              x="4"
-              y="12"
-              width="28"
-              height="16"
-              rx="2"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="rgba(249, 115, 22, 0.1)"
-            />
-            <path
-              d="M8 20c2-2 4-2 6 0s4 2 6 0s4-2 6 0s4 2 6 0"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <circle cx="18" cy="8" r="2" fill="rgba(249, 115, 22, 0.5)" />
-            <path d="M16 6l4 4" stroke="currentColor" strokeWidth="1" />
-          </svg>
-        ),
-      },
-    ];
-  }, []);
+    // Return different equipment based on experiment type
+    if (experimentTitle.includes("Acid-Base")) {
+      // Titration equipment
+      return [
+        {
+          id: "burette",
+          name: "50mL Burette",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-blue-600"
+            >
+              <rect
+                x="16"
+                y="4"
+                width="4"
+                height="24"
+                rx="1"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(59, 130, 246, 0.1)"
+              />
+              <circle cx="18" cy="30" r="2" fill="currentColor" />
+              <path d="M14 8h8" stroke="currentColor" strokeWidth="1" />
+              <path d="M14 12h8" stroke="currentColor" strokeWidth="1" />
+              <path d="M14 16h8" stroke="currentColor" strokeWidth="1" />
+            </svg>
+          ),
+        },
+        {
+          id: "conical_flask",
+          name: "250mL Conical Flask",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-green-600"
+            >
+              <path
+                d="M14 6h8v6l6 16H8l6-16V6z"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(34, 197, 94, 0.1)"
+              />
+              <path d="M12 6h12" stroke="currentColor" strokeWidth="2" />
+            </svg>
+          ),
+        },
+        {
+          id: "magnetic_stirrer",
+          name: "Magnetic Stirrer",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-blue-600"
+            >
+              <rect
+                x="6"
+                y="20"
+                width="24"
+                height="8"
+                rx="2"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(59, 130, 246, 0.1)"
+              />
+              <circle
+                cx="18"
+                cy="24"
+                r="6"
+                stroke="currentColor"
+                strokeWidth="1"
+                fill="none"
+              />
+              <rect
+                x="26"
+                y="21"
+                width="3"
+                height="2"
+                rx="1"
+                fill="currentColor"
+              />
+              <circle cx="28" cy="20" r="1" fill="green" />
+            </svg>
+          ),
+        },
+      ];
+    } else {
+      // Aspirin synthesis equipment
+      return [
+        {
+          id: "erlenmeyer_flask",
+          name: "125mL Erlenmeyer Flask",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-blue-600"
+            >
+              <path
+                d="M12 6h12v8l4 12H8l4-12V6z"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(59, 130, 246, 0.1)"
+              />
+              <path d="M10 6h16" stroke="currentColor" strokeWidth="2" />
+              <circle cx="18" cy="20" r="2" fill="rgba(59, 130, 246, 0.3)" />
+            </svg>
+          ),
+        },
+        {
+          id: "thermometer",
+          name: "Thermometer",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-red-600"
+            >
+              <rect
+                x="16"
+                y="4"
+                width="4"
+                height="20"
+                rx="2"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(239, 68, 68, 0.1)"
+              />
+              <circle cx="18" cy="28" r="4" fill="currentColor" />
+              <path d="M18 24v-16" stroke="currentColor" strokeWidth="1" />
+            </svg>
+          ),
+        },
+        {
+          id: "graduated_cylinder",
+          name: "Graduated Cylinder",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-green-600"
+            >
+              <rect
+                x="12"
+                y="6"
+                width="12"
+                height="24"
+                rx="1"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(34, 197, 94, 0.1)"
+              />
+              <path
+                d="M14 12h8M14 16h8M14 20h8M14 24h8"
+                stroke="currentColor"
+                strokeWidth="1"
+              />
+              <rect
+                x="10"
+                y="4"
+                width="16"
+                height="4"
+                rx="1"
+                stroke="currentColor"
+                strokeWidth="1"
+              />
+            </svg>
+          ),
+        },
+        {
+          id: "water_bath",
+          name: "Water Bath",
+          icon: (
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              className="text-orange-600"
+            >
+              <rect
+                x="4"
+                y="12"
+                width="28"
+                height="16"
+                rx="2"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="rgba(249, 115, 22, 0.1)"
+              />
+              <path
+                d="M8 20c2-2 4-2 6 0s4 2 6 0s4-2 6 0s4 2 6 0"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <circle cx="18" cy="8" r="2" fill="rgba(249, 115, 22, 0.5)" />
+              <path d="M16 6l4 4" stroke="currentColor" strokeWidth="1" />
+            </svg>
+          ),
+        },
+      ];
+    }
+  }, [experimentTitle]);
 
   // Check for experiment completion
   const checkExperimentCompletion = useCallback(() => {
@@ -405,10 +548,159 @@ function VirtualLabApp({
 
       setEquipmentPositions((prev) => {
         const existing = prev.find((pos) => pos.id === id);
+
+        // Auto-positioning logic for realistic lab setup
+        const getOptimalPosition = (
+          equipmentId: string,
+          dropX: number,
+          dropY: number,
+          existingPositions: any[],
+        ) => {
+          // For Acid-Base Titration experiment
+          if (experimentTitle.includes("Acid-Base")) {
+            const flask = existingPositions.find(
+              (pos) => pos.id === "conical_flask",
+            );
+            const burette = existingPositions.find(
+              (pos) => pos.id === "burette",
+            );
+            const stirrer = existingPositions.find(
+              (pos) => pos.id === "magnetic_stirrer",
+            );
+
+            switch (equipmentId) {
+              case "burette":
+                // Always position burette above flask if flask exists, or use intelligent positioning
+                if (flask) {
+                  const autoX = flask.x;
+                  const autoY = flask.y - 200; // Position well above flask
+                  const distanceToFlask = Math.sqrt(
+                    (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
+                  );
+
+                  // Auto-snap if dropped within 200px of flask OR if dropped in upper area
+                  if (distanceToFlask < 200 || dropY < flask.y) {
+                    setToastMessage(
+                      "🔧 Burette positioned above flask for titration!",
+                    );
+                    setTimeout(() => setToastMessage(null), 3000);
+                    return { x: autoX, y: Math.max(80, autoY) };
+                  }
+                }
+                // Default upper-center position for burette
+                return {
+                  x: Math.min(Math.max(200, dropX), window.innerWidth - 200),
+                  y: Math.max(80, Math.min(200, dropY)),
+                };
+
+              case "conical_flask":
+                // Position flask in optimal titration position
+                if (burette) {
+                  const autoX = burette.x;
+                  const autoY = burette.y + 200; // Position below burette
+                  const distanceToBurette = Math.sqrt(
+                    (dropX - burette.x) ** 2 + (dropY - burette.y) ** 2,
+                  );
+
+                  // Auto-snap if dropped within 200px of burette OR in lower area
+                  if (distanceToBurette < 200 || dropY > burette.y) {
+                    setToastMessage(
+                      "🔧 Flask positioned below burette for titration!",
+                    );
+                    setTimeout(() => setToastMessage(null), 3000);
+                    return {
+                      x: autoX,
+                      y: Math.min(window.innerHeight - 200, autoY),
+                    };
+                  }
+                }
+                // Default center position for flask
+                return {
+                  x: Math.min(Math.max(200, dropX), window.innerWidth - 200),
+                  y: Math.min(Math.max(300, dropY), window.innerHeight - 200),
+                };
+
+              case "magnetic_stirrer":
+                // Always position stirrer below flask if flask exists
+                if (flask) {
+                  const autoX = flask.x;
+                  const autoY = flask.y + 120; // Position below flask
+                  const distanceToFlask = Math.sqrt(
+                    (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
+                  );
+
+                  // Auto-snap if dropped within 150px of flask OR in lower area
+                  if (
+                    distanceToFlask < 150 ||
+                    (dropY > flask.y && Math.abs(dropX - flask.x) < 100)
+                  ) {
+                    setToastMessage(
+                      "🔧 Magnetic stirrer positioned under flask for mixing!",
+                    );
+                    setTimeout(() => setToastMessage(null), 3000);
+                    return {
+                      x: autoX,
+                      y: Math.min(window.innerHeight - 150, autoY),
+                    };
+                  }
+                }
+                // Position stirrer in lower area by default
+                return {
+                  x: Math.min(Math.max(150, dropX), window.innerWidth - 150),
+                  y: Math.min(Math.max(400, dropY), window.innerHeight - 150),
+                };
+
+              default:
+                return { x: dropX, y: dropY };
+            }
+          }
+
+          // For Aspirin Synthesis experiment
+          if (experimentTitle.includes("Aspirin")) {
+            const flask = existingPositions.find(
+              (pos) => pos.id === "erlenmeyer_flask",
+            );
+            const waterBath = existingPositions.find(
+              (pos) => pos.id === "water_bath",
+            );
+
+            switch (equipmentId) {
+              case "water_bath":
+                // Position in center-bottom area
+                return {
+                  x: Math.max(200, Math.min(dropX, window.innerWidth - 200)),
+                  y: Math.max(300, dropY),
+                };
+
+              case "erlenmeyer_flask":
+                // If water bath exists, position flask near it
+                if (waterBath) {
+                  const distanceToWaterBath = Math.sqrt(
+                    (dropX - waterBath.x) ** 2 + (dropY - waterBath.y) ** 2,
+                  );
+                  if (distanceToWaterBath < 100) {
+                    setToastMessage(
+                      "🔧 Auto-positioned flask for heating setup!",
+                    );
+                    setTimeout(() => setToastMessage(null), 3000);
+                    return { x: waterBath.x + 50, y: waterBath.y - 50 };
+                  }
+                }
+                return { x: dropX, y: dropY };
+
+              default:
+                return { x: dropX, y: dropY };
+            }
+          }
+
+          return { x: dropX, y: dropY };
+        };
+
         if (existing) {
-          // Smooth position update for existing equipment
+          // Smooth position update for existing equipment with auto-positioning
+          const optimalPos = getOptimalPosition(id, validX, validY, prev);
           return prev.map((pos) =>
-            pos.id === id ? { ...pos, x: validX, y: validY } : pos,
+            pos.id === id ? { ...pos, x: optimalPos.x, y: optimalPos.y } : pos,
           );
         }
 
@@ -437,7 +729,12 @@ function VirtualLabApp({
           }, 1000);
         }
 
-        return [...prev, { id, x: validX, y: validY, chemicals: [] }];
+        // Get optimal position for new equipment
+        const optimalPos = getOptimalPosition(id, validX, validY, prev);
+        return [
+          ...prev,
+          { id, x: optimalPos.x, y: optimalPos.y, chemicals: [] },
+        ];
       });
     },
     [experimentTitle, currentGuidedStep, aspirinGuidedSteps],
@@ -596,12 +893,19 @@ function VirtualLabApp({
               );
               setMeasurements((prev) => ({
                 ...prev,
-                volume: totalVolume,
+                volume: experimentTitle.includes("Acid-Base")
+                  ? prev.volume + recentChemical.amount
+                  : totalVolume,
                 concentration: calculations.molarity,
                 ph: calculations.ph,
                 molarity: calculations.molarity,
                 moles: calculations.moles,
               }));
+
+              // Show measurements panel for titration
+              if (experimentTitle.includes("Acid-Base")) {
+                setShowMeasurementsPanel(true);
+              }
             }
           }
 
@@ -740,6 +1044,75 @@ function VirtualLabApp({
 
   const handleClearResults = () => {
     setResults([]);
+  };
+
+  // pH Meter functions for titration
+  const handlePhMeterCalibration = () => {
+    setPhMeterCalibrated(true);
+    setToastMessage("✓ pH Meter calibrated with buffer solutions");
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  const handleCalculateEndpoint = () => {
+    if (experimentTitle.includes("Acid-Base")) {
+      const volumeAdded = measurements.volume;
+      const percentComplete = Math.min((volumeAdded / 23.5) * 100, 100);
+
+      // Simulate titration curve
+      let newPH = 7.0;
+      if (volumeAdded < 20) {
+        newPH = 2.5 + (volumeAdded / 20) * 4; // Gradual increase
+      } else if (volumeAdded >= 20 && volumeAdded < 23.5) {
+        newPH = 6.5 + ((volumeAdded - 20) / 3.5) * 4; // Rapid increase near endpoint
+      } else {
+        newPH = 11.0 + Math.min((volumeAdded - 23.5) * 0.1, 2); // Basic region
+      }
+
+      setCurrentPH(newPH);
+      setMeasurements((prev) => ({
+        ...prev,
+        ph: newPH,
+        molarity: (0.1 * volumeAdded) / 25.0, // Calculate HCl molarity
+      }));
+
+      const result: Result = {
+        id: Date.now().toString(),
+        type: newPH > 8.2 ? "success" : "warning",
+        title: newPH > 8.2 ? "Endpoint Reached!" : "Approaching Endpoint",
+        description: `pH: ${newPH.toFixed(2)}, Volume: ${volumeAdded.toFixed(1)}mL`,
+        timestamp: new Date().toLocaleTimeString(),
+        calculation: {
+          ph: newPH,
+          volumeAdded: volumeAdded,
+          molarity: (0.1 * volumeAdded) / 25.0,
+          reactionType: "Acid-Base Neutralization",
+        },
+      };
+
+      setResults((prev) => [...prev, result]);
+
+      if (newPH > 8.2) {
+        setToastMessage("🎉 Titration endpoint reached! Pink color persists.");
+      } else {
+        setToastMessage(`📊 pH: ${newPH.toFixed(2)} - Continue titration`);
+      }
+      setTimeout(() => setToastMessage(null), 4000);
+    }
+  };
+
+  const handleResetMeasurements = () => {
+    setMeasurements({
+      volume: 0,
+      concentration: 0,
+      ph: 7,
+      molarity: 0,
+      moles: 0,
+      temperature: 25,
+    });
+    setCurrentPH(7.0);
+    setShowMeasurementsPanel(false);
+    setToastMessage("🔄 Measurements reset for new trial");
+    setTimeout(() => setToastMessage(null), 2000);
   };
 
   // Function to check if an action is valid for the current step
@@ -932,11 +1305,21 @@ function VirtualLabApp({
                   ))}
                 </div>
               ) : (
-                <ExperimentSteps
-                  currentStep={currentStep}
-                  steps={experimentSteps}
-                  onStepClick={handleStepClick}
-                />
+                <>
+                  <ExperimentSteps
+                    currentStep={currentStep}
+                    steps={experimentSteps}
+                    onStepClick={handleStepClick}
+                    experimentTitle={experimentTitle}
+                  />
+
+                  {/* Chemical Formulas for Acid-Base Titration */}
+                  {experimentTitle.includes("Acid-Base") && (
+                    <div className="mt-4">
+                      <ChemicalFormulas experimentTitle={experimentTitle} />
+                    </div>
+                  )}
+                </>
               )}
 
               {/* Heating Status Panel - For Aspirin Experiment */}
@@ -1242,6 +1625,32 @@ function VirtualLabApp({
               </div>
             ))}
           </div>
+
+          {/* Chemicals Bar */}
+          <div className="bg-gray-50 border-b border-gray-200 p-3">
+            <div className="flex items-center justify-between">
+              <h4 className="font-semibold text-gray-800 text-sm flex items-center">
+                <Beaker className="w-4 h-4 mr-2 text-green-600" />
+                Available Chemicals
+              </h4>
+            </div>
+            <div className="flex items-center space-x-3 mt-2 overflow-x-auto pb-2">
+              {experimentChemicals.map((chemical) => (
+                <div key={chemical.id} className="flex-shrink-0">
+                  <Chemical
+                    id={chemical.id}
+                    name={chemical.name}
+                    formula={chemical.formula}
+                    color={chemical.color}
+                    concentration={chemical.concentration}
+                    volume={chemical.volume}
+                    isSelected={selectedChemical === chemical.id}
+                    onClick={() => setSelectedChemical(chemical.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Main Work Area - Expanded */}
@@ -1284,6 +1693,41 @@ function VirtualLabApp({
               })}
             </WorkBench>
           </div>
+
+          {/* Titration-specific panels */}
+          {experimentTitle.includes("Acid-Base") && (
+            <div className="border-t border-gray-200 bg-white/90 backdrop-blur-sm">
+              <MeasurementsPanel
+                measurements={{
+                  ph: currentPH,
+                  volume: measurements.volume,
+                  molarity: measurements.molarity,
+                  temperature: measurements.temperature,
+                }}
+                onCalculateEndpoint={handleCalculateEndpoint}
+                onReset={handleResetMeasurements}
+                isVisible={measurements.volume > 0 || showMeasurementsPanel}
+              />
+            </div>
+          )}
+
+          {/* pH Meter for titrations */}
+          {experimentTitle.includes("Acid-Base") && measurements.volume > 0 && (
+            <div className="fixed bottom-4 right-4 z-40">
+              <PHMeterSimulation
+                currentPH={currentPH}
+                isCalibrated={phMeterCalibrated}
+                onCalibrate={handlePhMeterCalibration}
+                isConnected={true}
+                solutionName={"HCl + NaOH Titration"}
+                temperature={measurements.temperature}
+                onMeasurement={(ph, accuracy) => {
+                  setCurrentPH(ph);
+                  setMeasurements((prev) => ({ ...prev, ph }));
+                }}
+              />
+            </div>
+          )}
 
           {/* Results Panel - When present */}
           {results.length > 0 && (
@@ -1362,14 +1806,7 @@ function VirtualLabApp({
               <div className="flex items-center space-x-3">
                 {experimentTitle.includes("Acid-Base") && (
                   <button
-                    onClick={() => {
-                      const equivalencePoint = 25.0; // mL for 0.1M solutions
-                      const percentComplete =
-                        (measurements.volume / equivalencePoint) * 100;
-                      console.log(
-                        `Titration ${percentComplete.toFixed(1)}% complete`,
-                      );
-                    }}
+                    onClick={handleCalculateEndpoint}
                     className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm font-medium transition-colors"
                   >
                     Calculate Endpoint
@@ -1391,17 +1828,7 @@ function VirtualLabApp({
                 )}
 
                 <button
-                  onClick={() => {
-                    // Reset calculations
-                    setMeasurements((prev) => ({
-                      ...prev,
-                      volume: 0,
-                      concentration: 0,
-                      ph: 7,
-                      molarity: 0,
-                      moles: 0,
-                    }));
-                  }}
+                  onClick={handleResetMeasurements}
                   className="bg-gray-600 hover:bg-gray-700 px-3 py-1 rounded text-sm font-medium transition-colors"
                 >
                   Reset

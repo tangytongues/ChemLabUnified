@@ -283,7 +283,11 @@ export const WorkBench: React.FC<WorkBenchProps> = ({
                 <div>
                   <h2 className="text-2xl font-bold">Virtual Chemistry Lab</h2>
                   <p className="text-sm opacity-90">
-                    Interactive Titration Workspace
+                    {experimentTitle.includes("Acid-Base")
+                      ? "Interactive Titration Workspace"
+                      : experimentTitle.includes("Aspirin")
+                        ? "Aspirin Synthesis Workspace"
+                        : "Interactive Chemistry Workspace"}
                   </p>
                 </div>
               </div>
