@@ -61,6 +61,10 @@ export const Equipment: React.FC<EquipmentProps> = ({
     // Set both equipment and text/plain for broader compatibility
     e.dataTransfer.setData("equipment", id);
     e.dataTransfer.setData("text/plain", id);
+    e.dataTransfer.setData(
+      "application/json",
+      JSON.stringify({ type: "equipment", id }),
+    );
     setShowContextMenu(false);
     setIsDragging(true);
     setDragStartTime(Date.now());
