@@ -700,7 +700,11 @@ function VirtualLabApp({
 
         if (existing) {
           // Smooth position update for existing equipment with auto-positioning
+          console.log(`Repositioning existing equipment: ${id}`);
           const optimalPos = getOptimalPosition(id, validX, validY, prev);
+          console.log(
+            `New position for ${id}: x=${optimalPos.x}, y=${optimalPos.y}`,
+          );
           return prev.map((pos) =>
             pos.id === id ? { ...pos, x: optimalPos.x, y: optimalPos.y } : pos,
           );
