@@ -514,12 +514,65 @@ export const Equipment: React.FC<EquipmentProps> = ({
         );
       }
 
-      if (id === "graduated_cylinder" || id === "burette") {
+      if (id === "graduated_cylinder") {
         return (
           <div className="relative">
             <img
               src="https://cdn.builder.io/api/v1/image/assets%2F3ac4fed498614db287eb1f9aa48832e0%2Fcbb897db39e9400fa4cec1eb64f8d0b5?format=webp&width=800"
               alt="Graduated Cylinder"
+              className="w-28 h-48 object-contain"
+              style={{
+                filter: "drop-shadow(0 10px 25px rgba(0,0,0,0.15))",
+              }}
+            />
+
+            {/* Solution in graduated cylinder */}
+            {chemicals.length > 0 && (
+              <div
+                className="absolute bottom-2 left-1/2 transform -translate-x-1/2 transition-all duration-700 ease-out"
+                style={{
+                  backgroundColor: getMixedColor(),
+                  width: "75%",
+                  height: `${Math.min(160, getSolutionHeight() * 1.2)}px`,
+                  opacity: 0.85,
+                  borderRadius: "0 0 4px 4px",
+                }}
+              >
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-white opacity-30 rounded-full"></div>
+
+                {/* Volume markings overlay */}
+                <div className="absolute right-1 top-2 space-y-4 text-[6px] text-gray-700 font-mono">
+                  <div>100</div>
+                  <div>80</div>
+                  <div>60</div>
+                  <div>40</div>
+                  <div>20</div>
+                </div>
+              </div>
+            )}
+
+            {/* Equipment label */}
+            <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 text-center">
+              <div className="bg-white border border-gray-300 px-2 py-1 rounded shadow text-xs font-semibold text-gray-800">
+                100mL Graduated Cylinder
+              </div>
+              {chemicals.length > 0 && (
+                <div className="text-xs text-gray-600 mt-1">
+                  Vol:{" "}
+                  {chemicals.reduce((sum, c) => sum + c.amount, 0).toFixed(1)}mL
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+
+      if (id === "burette") {
+        return (
+          <div className="relative">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F3ac4fed498614db287eb1f9aa48832e0%2Fcbb897db39e9400fa4cec1eb64f8d0b5?format=webp&width=800"
+              alt="Burette"
               className="w-28 h-48 object-contain"
               style={{
                 filter: "drop-shadow(0 10px 25px rgba(0,0,0,0.15))",
