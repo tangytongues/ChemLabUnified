@@ -1239,7 +1239,7 @@ function VirtualLabApp({
         concentration: 0,
         ph: 7,
         molarity: 0,
-        weight: 0,
+
         moles: 0,
         temperature: 25,
       });
@@ -1673,8 +1673,8 @@ function VirtualLabApp({
                     color={chemical.color}
                     concentration={chemical.concentration}
                     volume={chemical.volume}
-                    isSelected={selectedChemical === chemical.id}
-                    onClick={() => setSelectedChemical(chemical.id)}
+                    selected={selectedChemical === chemical.id}
+                    onSelect={() => setSelectedChemical(chemical.id)}
                   />
                 </div>
               ))}
