@@ -190,9 +190,8 @@ export default function Experiment() {
     safetyInfo: "",
   };
 
-  // Use fallback if experiment data is missing and we've shown fallback
-  const effectiveExperiment =
-    showFallback && !experiment ? fallbackExperiment : experiment;
+  // Always use fallback if experiment data is missing
+  const effectiveExperiment = experiment || fallbackExperiment;
 
   if (
     !effectiveExperiment ||
