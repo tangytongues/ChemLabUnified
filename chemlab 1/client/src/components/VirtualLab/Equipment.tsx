@@ -58,7 +58,9 @@ export const Equipment: React.FC<EquipmentProps> = ({
   const [dragStartTime, setDragStartTime] = useState(0);
 
   const handleDragStart = (e: React.DragEvent) => {
+    // Set both equipment and text/plain for broader compatibility
     e.dataTransfer.setData("equipment", id);
+    e.dataTransfer.setData("text/plain", id);
     setShowContextMenu(false);
     setIsDragging(true);
     setDragStartTime(Date.now());
@@ -72,6 +74,9 @@ export const Equipment: React.FC<EquipmentProps> = ({
     // Create a cleaner drag image
     const dragElement = e.currentTarget as HTMLElement;
     dragElement.style.opacity = "0.8";
+
+    // Log for debugging
+    console.log(`Dragging equipment: ${id}`);
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
