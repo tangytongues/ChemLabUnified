@@ -548,10 +548,146 @@ function VirtualLabApp({
 
       setEquipmentPositions((prev) => {
         const existing = prev.find((pos) => pos.id === id);
+
+        // Auto-positioning logic for realistic lab setup
+        const getOptimalPosition = (
+          equipmentId: string,
+          dropX: number,
+          dropY: number,
+          existingPositions: any[],
+        ) => {
+          // For Acid-Base Titration experiment
+          if (experimentTitle.includes("Acid-Base")) {
+            const flask = existingPositions.find(
+              (pos) => pos.id === "conical_flask",
+            );
+            const burette = existingPositions.find(
+              (pos) => pos.id === "burette",
+            );
+            const stirrer = existingPositions.find(
+              (pos) => pos.id === "magnetic_stirrer",
+            );
+
+            switch (equipmentId) {
+              case "burette":
+                // If flask exists, position burette above it
+                if (flask) {
+                  const autoX = flask.x;
+                  const autoY = flask.y - 180; // Position above flask
+                  const distanceToFlask = Math.sqrt(
+                    (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
+                  );
+
+                  // Auto-snap if dropped within 150px of flask
+                  if (distanceToFlask < 150) {
+                    setToastMessage(
+                      "🔧 Auto-positioned burette above flask for titration setup!",
+                    );
+                    setTimeout(() => setToastMessage(null), 3000);
+                    return { x: autoX, y: Math.max(50, autoY) };
+                  }
+                }
+                // Default center-top position for burette
+                return { x: dropX, y: Math.max(120, dropY) };
+
+              case "conical_flask":
+                // If burette exists, position flask below it
+                if (burette) {
+                  const autoX = burette.x;
+                  const autoY = burette.y + 180; // Position below burette
+                  const distanceToBurette = Math.sqrt(
+                    (dropX - burette.x) ** 2 + (dropY - burette.y) ** 2,
+                  );
+
+                  // Auto-snap if dropped within 150px of burette
+                  if (distanceToBurette < 150) {
+                    setToastMessage(
+                      "🔧 Auto-positioned flask below burette for titration setup!",
+                    );
+                    setTimeout(() => setToastMessage(null), 3000);
+                    return {
+                      x: autoX,
+                      y: Math.min(window.innerHeight - 150, autoY),
+                    };
+                  }
+                }
+                // Default center position for flask
+                return { x: dropX, y: dropY };
+
+              case "magnetic_stirrer":
+                // If flask exists, position stirrer below/near it
+                if (flask) {
+                  const autoX = flask.x;
+                  const autoY = flask.y + 80; // Position below flask
+                  const distanceToFlask = Math.sqrt(
+                    (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
+                  );
+
+                  // Auto-snap if dropped within 120px of flask
+                  if (distanceToFlask < 120) {
+                    setToastMessage(
+                      "🔧 Auto-positioned stirrer under flask for mixing!",
+                    );
+                    setTimeout(() => setToastMessage(null), 3000);
+                    return {
+                      x: autoX,
+                      y: Math.min(window.innerHeight - 100, autoY),
+                    };
+                  }
+                }
+                return { x: dropX, y: dropY };
+
+              default:
+                return { x: dropX, y: dropY };
+            }
+          }
+
+          // For Aspirin Synthesis experiment
+          if (experimentTitle.includes("Aspirin")) {
+            const flask = existingPositions.find(
+              (pos) => pos.id === "erlenmeyer_flask",
+            );
+            const waterBath = existingPositions.find(
+              (pos) => pos.id === "water_bath",
+            );
+
+            switch (equipmentId) {
+              case "water_bath":
+                // Position in center-bottom area
+                return {
+                  x: Math.max(200, Math.min(dropX, window.innerWidth - 200)),
+                  y: Math.max(300, dropY),
+                };
+
+              case "erlenmeyer_flask":
+                // If water bath exists, position flask near it
+                if (waterBath) {
+                  const distanceToWaterBath = Math.sqrt(
+                    (dropX - waterBath.x) ** 2 + (dropY - waterBath.y) ** 2,
+                  );
+                  if (distanceToWaterBath < 100) {
+                    setToastMessage(
+                      "🔧 Auto-positioned flask for heating setup!",
+                    );
+                    setTimeout(() => setToastMessage(null), 3000);
+                    return { x: waterBath.x + 50, y: waterBath.y - 50 };
+                  }
+                }
+                return { x: dropX, y: dropY };
+
+              default:
+                return { x: dropX, y: dropY };
+            }
+          }
+
+          return { x: dropX, y: dropY };
+        };
+
         if (existing) {
-          // Smooth position update for existing equipment
+          // Smooth position update for existing equipment with auto-positioning
+          const optimalPos = getOptimalPosition(id, validX, validY, prev);
           return prev.map((pos) =>
-            pos.id === id ? { ...pos, x: validX, y: validY } : pos,
+            pos.id === id ? { ...pos, x: optimalPos.x, y: optimalPos.y } : pos,
           );
         }
 
@@ -580,7 +716,12 @@ function VirtualLabApp({
           }, 1000);
         }
 
-        return [...prev, { id, x: validX, y: validY, chemicals: [] }];
+        // Get optimal position for new equipment
+        const optimalPos = getOptimalPosition(id, validX, validY, prev);
+        return [
+          ...prev,
+          { id, x: optimalPos.x, y: optimalPos.y, chemicals: [] },
+        ];
       });
     },
     [experimentTitle, currentGuidedStep, aspirinGuidedSteps],
