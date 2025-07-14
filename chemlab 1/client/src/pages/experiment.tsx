@@ -104,21 +104,23 @@ export default function Experiment() {
       experimentId: experimentId,
       currentStep: Math.min(
         currentStep + 1,
-        experiment?.stepDetails.length || 0 - 1,
+        effectiveExperiment?.stepDetails.length || 0 - 1,
       ),
-      completed: currentStep === (experiment?.stepDetails.length || 0) - 1,
+      completed:
+        currentStep === (effectiveExperiment?.stepDetails.length || 0) - 1,
       progressPercentage: Math.round(
-        ((currentStep + 2) / (experiment?.stepDetails.length || 1)) * 100,
+        ((currentStep + 2) / (effectiveExperiment?.stepDetails.length || 1)) *
+          100,
       ),
     });
 
-    if (currentStep < (experiment?.stepDetails.length || 0) - 1) {
+    if (currentStep < (effectiveExperiment?.stepDetails.length || 0) - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
 
   const handleNextStep = () => {
-    if (currentStep < (experiment?.stepDetails.length || 0) - 1) {
+    if (currentStep < (effectiveExperiment?.stepDetails.length || 0) - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
