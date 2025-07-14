@@ -34,7 +34,7 @@ export default function ProgressModal({ children }: ProgressModalProps) {
       0,
     );
     const completedSteps = userProgress.reduce(
-      (sum: number, p: any) => sum + p.progress,
+      (sum: number, p: any) => sum + p.currentStep,
       0,
     );
     return totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
