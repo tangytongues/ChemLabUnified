@@ -288,14 +288,14 @@ export default function Experiment() {
                       <ArrowLeft className="h-4 w-4" />
                     </Button>
                     <span className="text-sm text-gray-600 px-2">
-                      {currentStep + 1} /{" "}
+                      {safeCurrentStep + 1} /{" "}
                       {effectiveExperiment.stepDetails.length}
                     </span>
                     <Button
                       variant="outline"
                       onClick={handleNextStep}
                       disabled={
-                        currentStep ===
+                        safeCurrentStep ===
                         effectiveExperiment.stepDetails.length - 1
                       }
                       size="sm"
