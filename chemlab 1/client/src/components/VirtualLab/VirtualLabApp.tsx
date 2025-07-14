@@ -736,11 +736,22 @@ function VirtualLabApp({
         }
 
         // Get optimal position for new equipment
+        console.log(`Adding new equipment: ${id}`);
         const optimalPos = getOptimalPosition(id, validX, validY, prev);
-        return [
+        console.log(
+          `Optimal position for new ${id}: x=${optimalPos.x}, y=${optimalPos.y}`,
+        );
+        const newEquipment = {
+          id,
+          x: optimalPos.x,
+          y: optimalPos.y,
+          chemicals: [],
+        };
+        console.log(`Equipment list after adding ${id}:`, [
           ...prev,
-          { id, x: optimalPos.x, y: optimalPos.y, chemicals: [] },
-        ];
+          newEquipment,
+        ]);
+        return [...prev, newEquipment];
       });
     },
     [experimentTitle, currentGuidedStep, aspirinGuidedSteps],
