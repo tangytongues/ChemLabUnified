@@ -118,6 +118,7 @@ export default function Experiment() {
   };
 
   if (experimentLoading) {
+    console.log("Showing loading skeleton because experimentLoading is true");
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
@@ -141,6 +142,11 @@ export default function Experiment() {
     !experiment.stepDetails ||
     experiment.stepDetails.length === 0
   ) {
+    console.log("Showing experiment not found because:", {
+      hasExperiment: !!experiment,
+      hasStepDetails: !!experiment?.stepDetails,
+      stepDetailsLength: experiment?.stepDetails?.length,
+    });
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
