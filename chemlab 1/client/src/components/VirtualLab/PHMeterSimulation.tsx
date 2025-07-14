@@ -325,46 +325,6 @@ export const PHMeterSimulation: React.FC<PHMeterProps> = ({
           </CardContent>
         </Card>
       )}
-
-      {/* Solution Info */}
-      <Card className="w-80">
-        <CardContent className="pt-4">
-          <div className="text-center">
-            <div className="text-sm font-medium text-gray-700">
-              Current Solution
-            </div>
-            <div className="text-lg font-bold text-blue-600">
-              {solutionName}
-            </div>
-            {displayPH !== null && isOn && (
-              <div
-                className="mt-2 p-2 rounded"
-                style={{ backgroundColor: `${getPHColor(displayPH)}20` }}
-              >
-                <div className="text-sm text-gray-600">
-                  This solution is{" "}
-                  <span className="font-semibold">
-                    {getPHCategory(displayPH)}
-                  </span>
-                </div>
-                {displayPH < 7 && (
-                  <div className="text-xs text-red-600 mt-1">
-                    [H⁺] = {(Math.pow(10, -displayPH) * 1000).toExponential(2)}{" "}
-                    mM
-                  </div>
-                )}
-                {displayPH > 7 && (
-                  <div className="text-xs text-blue-600 mt-1">
-                    [OH⁻] ={" "}
-                    {(Math.pow(10, -(14 - displayPH)) * 1000).toExponential(2)}{" "}
-                    mM
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };
