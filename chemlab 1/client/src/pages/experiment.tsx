@@ -312,7 +312,7 @@ export default function Experiment() {
                 step={currentStepData}
                 onStepComplete={handleCompleteStep}
                 isActive={isActive}
-                stepNumber={currentStep + 1}
+                stepNumber={safeCurrentStep + 1}
                 totalSteps={effectiveExperiment.stepDetails.length}
                 experimentTitle={effectiveExperiment.title}
                 allSteps={effectiveExperiment.stepDetails}
