@@ -542,6 +542,8 @@ function VirtualLabApp({
 
   const handleEquipmentDrop = useCallback(
     (id: string, x: number, y: number) => {
+      console.log(`handleEquipmentDrop called with: id=${id}, x=${x}, y=${y}`);
+
       // Ensure coordinates are valid numbers and within reasonable bounds
       const validX = Math.max(50, Math.min(x, window.innerWidth - 200));
       const validY = Math.max(50, Math.min(y, window.innerHeight - 200));
