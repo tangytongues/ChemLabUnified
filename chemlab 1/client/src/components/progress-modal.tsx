@@ -122,7 +122,7 @@ export default function ProgressModal({ children }: ProgressModalProps) {
                           <h4 className="font-medium">{experiment.title}</h4>
                         </div>
                         <span className="text-sm font-medium text-gray-600">
-                          {progress}/{experiment.steps.length} steps
+                          {progress}/{experiment.steps} steps
                         </span>
                       </div>
                       <Progress
