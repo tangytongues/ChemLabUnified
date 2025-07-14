@@ -129,7 +129,7 @@ export default function Experiment() {
     }
   };
 
-  if (experimentLoading) {
+  if (experimentLoading && !showFallback) {
     console.log("Showing loading skeleton because experimentLoading is true");
     return (
       <div className="min-h-screen bg-gray-50">
