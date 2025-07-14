@@ -446,6 +446,74 @@ export const Equipment: React.FC<EquipmentProps> = ({
         );
       }
 
+      if (id === "test_tubes" && isOnWorkbench) {
+        return (
+          <div className="relative">
+            <div className="flex gap-2 items-end">
+              {[0, 1, 2].map((tubeIndex) => (
+                <div key={tubeIndex} className="relative">
+                  <div className="w-6 h-24 bg-gradient-to-b from-gray-100 to-gray-200 border-2 border-gray-400 rounded-b-lg shadow-md relative overflow-hidden">
+                    <div className="absolute top-1 left-1 w-1 h-20 bg-white opacity-30 rounded-full"></div>
+
+                    {/* Solution in individual test tubes */}
+                    {chemicals.length > tubeIndex && (
+                      <div
+                        className="absolute bottom-1 left-1 right-1 rounded-b-lg transition-all duration-700 ease-out"
+                        style={{
+                          backgroundColor:
+                            chemicals[tubeIndex]?.color || getMixedColor(),
+                          height: `${Math.min(80, (chemicals[tubeIndex]?.amount || 10) * 2)}px`,
+                          opacity: 0.8,
+                        }}
+                      >
+                        <div className="absolute top-0 left-0 right-0 h-0.5 bg-white opacity-40 rounded-full"></div>
+
+                        {/* Bubbling for reactions */}
+                        {chemicals.length > 1 && (
+                          <div className="absolute inset-0">
+                            <div
+                              className="absolute w-0.5 h-0.5 bg-white rounded-full opacity-80"
+                              style={{
+                                left: "50%",
+                                bottom: "5px",
+                                animationName: "bounce",
+                                animationDuration: "1.5s",
+                                animationIterationCount: "infinite",
+                                animationDelay: `${tubeIndex * 0.3}s`,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Test tube label */}
+                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-[8px] text-gray-600 font-mono">
+                    {tubeIndex + 1}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Test tube rack base */}
+            <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-20 h-2 bg-gradient-to-b from-gray-300 to-gray-500 rounded-lg shadow-md"></div>
+
+            {/* Equipment label */}
+            <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 text-center">
+              <div className="bg-white border border-gray-300 px-2 py-1 rounded shadow text-xs font-semibold text-gray-800">
+                Test Tubes
+              </div>
+              {chemicals.length > 0 && (
+                <div className="text-xs text-gray-600 mt-1">
+                  {chemicals.length} sample{chemicals.length > 1 ? "s" : ""}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+
       if (id === "graduated_cylinder" || id === "burette") {
         return (
           <div className="relative">
