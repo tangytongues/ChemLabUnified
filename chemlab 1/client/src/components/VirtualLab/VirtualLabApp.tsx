@@ -581,7 +581,7 @@ function VirtualLabApp({
                 // Always position burette above flask if flask exists, or use intelligent positioning
                 if (flask) {
                   const autoX = flask.x;
-                  const autoY = flask.y - 200; // Position well above flask
+                  const autoY = flask.y - 140; // Position closer to flask opening
                   const distanceToFlask = Math.sqrt(
                     (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
                   );
