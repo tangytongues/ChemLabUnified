@@ -422,6 +422,13 @@ export const Equipment: React.FC<EquipmentProps> = ({
                   mL
                 </div>
               )}
+              {/* Color indicator showing the current solution color */}
+              {chemicals.length > 0 && (
+                <div
+                  className="w-full h-2 rounded-full mt-1 border border-gray-300"
+                  style={{ backgroundColor: getConicalFlaskColor() }}
+                ></div>
+              )}
             </div>
           </div>
         );
