@@ -729,7 +729,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
       return (
         <div className="relative">
           <img
-            src="https://cdn.builder.io/api/v1/image/assets%2F697e1d72304b4a6ba798abf6498db515%2Fd59ee3d24ea843f48e301ae72cdd7b6c?format=webp&width=800"
+            src="https://cdn.builder.io/api/v1/image/assets%2F697e1d72304b4a6ba798abf6498db515%2Fea62584c431e4ad7a00881cb9894fec4?format=webp&width=800"
             alt="50mL Burette"
             className="w-32 h-96 object-contain"
             style={{
