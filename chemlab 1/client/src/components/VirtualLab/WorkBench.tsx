@@ -261,9 +261,24 @@ export const WorkBench: React.FC<WorkBenchProps> = ({
     e.preventDefault();
     e.stopPropagation();
 
-    // Try to get equipment data first, then fallback to text/plain
-    const equipmentId = e.dataTransfer.getData("equipment");
-    const id = equipmentId || e.dataTransfer.getData("text/plain");
+    // Try multiple data types to get equipment data
+    let id = e.dataTransfer.getData("equipment");
+    if (!id) {
+      id = e.dataTransfer.getData("text/plain");
+    }
+    if (!id) {
+      try {
+        const jsonData = e.dataTransfer.getData("application/json");
+        if (jsonData) {
+          const parsed = JSON.parse(jsonData);
+          if (parsed.type === "equipment") {
+            id = parsed.id;
+          }
+        }
+      } catch (error) {
+        console.warn("Failed to parse JSON data from drag event");
+      }
+    }
 
     console.log(`Dropping equipment: ${id}`);
 
@@ -272,12 +287,16 @@ export const WorkBench: React.FC<WorkBenchProps> = ({
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      console.log(`Drop position: x=${x}, y=${y}`);
+      console.log(`Drop position: x=${x}, y=${y} for equipment: ${id}`);
 
       // Call the onDrop handler
       onDrop(id, x, y);
     } else {
-      console.warn("No equipment ID found in drop event");
+      console.warn("No equipment ID found in drop event", {
+        types: Array.from(e.dataTransfer.types),
+        equipment: e.dataTransfer.getData("equipment"),
+        textPlain: e.dataTransfer.getData("text/plain"),
+      });
     }
   };
 
