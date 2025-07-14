@@ -307,16 +307,35 @@ export default function Experiment() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              {/* Interactive Virtual Lab - Full Size */}
-              <VirtualLabApp
-                step={currentStepData}
-                onStepComplete={handleCompleteStep}
-                isActive={isActive}
-                stepNumber={safeCurrentStep + 1}
-                totalSteps={effectiveExperiment.stepDetails.length}
-                experimentTitle={effectiveExperiment.title}
-                allSteps={effectiveExperiment.stepDetails}
-              />
+              {/* Interactive Virtual Lab - Full Size - Always Render */}
+              {effectiveExperiment &&
+              effectiveExperiment.stepDetails &&
+              effectiveExperiment.stepDetails.length > 0 ? (
+                <VirtualLabApp
+                  step={currentStepData}
+                  onStepComplete={handleCompleteStep}
+                  isActive={isActive}
+                  stepNumber={safeCurrentStep + 1}
+                  totalSteps={effectiveExperiment.stepDetails.length}
+                  experimentTitle={effectiveExperiment.title}
+                  allSteps={effectiveExperiment.stepDetails}
+                  experimentId={experimentId}
+                />
+              ) : (
+                <div className="min-h-[80vh] flex items-center justify-center bg-gray-100">
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Loading Virtual Lab...
+                    </h3>
+                    <p className="text-gray-600">
+                      Setting up your chemistry workspace
+                    </p>
+                    <div className="mt-4">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
