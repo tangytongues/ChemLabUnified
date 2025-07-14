@@ -86,6 +86,12 @@ function VirtualLabApp({
   allSteps,
   experimentId = 1,
 }: VirtualLabProps) {
+  console.log("🧪 VirtualLabApp rendering with:", {
+    experimentTitle,
+    stepNumber,
+    totalSteps,
+    stepTitle: step?.title,
+  });
   const [equipmentPositions, setEquipmentPositions] = useState<
     EquipmentPosition[]
   >([]);
