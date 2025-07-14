@@ -629,23 +629,22 @@ function VirtualLabApp({
                 };
 
               case "magnetic_stirrer":
-                // Position stirrer at bottom of workbench area
-                const workbenchHeight = 500; // Height of workbench area
-                const bottomY = Math.max(350, workbenchHeight - 80); // Position near bottom of workbench
+                // Position stirrer directly below conical flask if it exists
                 if (flask) {
                   const autoX = flask.x;
-                  const autoY = bottomY;
+                  const autoY = flask.y + 120; // Position 120px below flask
                   const distanceToFlask = Math.sqrt(
                     (dropX - flask.x) ** 2 + (dropY - flask.y) ** 2,
                   );
 
-                  // Auto-snap if dropped within 150px of flask OR in lower area
+                  // Auto-snap if dropped anywhere near flask or in lower area
                   if (
-                    distanceToFlask < 150 ||
-                    (dropY > flask.y && Math.abs(dropX - flask.x) < 100)
+                    distanceToFlask < 200 ||
+                    dropY > flask.y ||
+                    Math.abs(dropX - flask.x) < 150
                   ) {
                     setToastMessage(
-                      "🔧 Magnetic stirrer positioned under flask!",
+                      "🧲 Magnetic stirrer positioned directly below flask!",
                     );
                     setTimeout(() => setToastMessage(null), 3000);
                     return {
@@ -654,14 +653,13 @@ function VirtualLabApp({
                     };
                   }
                 }
-                // Position stirrer at bottom of workbench by default
-                const defaultX = Math.min(
-                  Math.max(100, dropX),
-                  800, // Fixed workbench width
-                );
+                // Default positioning if no flask present
+                const workbenchHeight = 400;
+                const defaultY = Math.max(300, workbenchHeight - 100);
+                const defaultX = Math.min(Math.max(100, dropX), 600);
                 return {
                   x: defaultX,
-                  y: bottomY,
+                  y: defaultY,
                 };
 
               default:
