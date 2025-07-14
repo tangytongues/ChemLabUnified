@@ -19,6 +19,7 @@ import {
 import { Search, Filter, FlaskConical, Clock, Star, Users } from "lucide-react";
 
 export default function Home() {
+  console.log("🏠 Home page component is rendering!");
   const { data: experiments, isLoading, error } = useExperiments();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
