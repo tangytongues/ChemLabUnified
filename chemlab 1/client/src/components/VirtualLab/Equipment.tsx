@@ -324,6 +324,26 @@ export const Equipment: React.FC<EquipmentProps> = ({
       }
 
       if (id === "conical_flask" && isOnWorkbench) {
+        // Custom color logic for conical flask
+        const getConicalFlaskColor = () => {
+          if (chemicals.length === 0) return "transparent";
+
+          const chemicalIds = chemicals.map((c) => c.id).sort();
+
+          // HCL + Phenolphthalein = Blue
+          if (chemicalIds.includes("hcl") && chemicalIds.includes("phenol")) {
+            return "#0066FF"; // Blue color
+          }
+
+          // Just HCL = Yellow
+          if (chemicalIds.includes("hcl")) {
+            return "#FFD700"; // Yellow color
+          }
+
+          // Default to normal mixed color for other chemicals
+          return getMixedColor();
+        };
+
         return (
           <div className="relative">
             <img
@@ -340,7 +360,7 @@ export const Equipment: React.FC<EquipmentProps> = ({
               <div
                 className="absolute bottom-4 left-1/2 transform -translate-x-1/2 transition-all duration-700 ease-out"
                 style={{
-                  backgroundColor: getMixedColor(),
+                  backgroundColor: getConicalFlaskColor(),
                   width: "60%",
                   height: `${Math.min(120, getSolutionHeight() * 1.2)}px`,
                   opacity: 0.8,
