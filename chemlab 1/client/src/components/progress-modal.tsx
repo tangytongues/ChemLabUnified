@@ -104,9 +104,9 @@ export default function ProgressModal({ children }: ProgressModalProps) {
                 {experiments?.map((experiment: any) => {
                   const progress = getExperimentProgress(experiment.id);
                   const progressPercentage = Math.round(
-                    (progress / experiment.steps.length) * 100,
+                    (progress / experiment.steps) * 100,
                   );
-                  const isCompleted = progress >= experiment.steps.length;
+                  const isCompleted = progress >= experiment.steps;
 
                   return (
                     <div key={experiment.id} className="border rounded-lg p-4">
